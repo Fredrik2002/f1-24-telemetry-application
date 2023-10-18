@@ -2,7 +2,7 @@ from tkinter import *
 from Player import Player
 
 
-class Custom_Frame(Frame):
+class Custom_Frame(Frame): # Frame Tableau
     def __init__(self, parent, name):
         super().__init__(parent, background="red")
         self.columnconfigure(0, weight=1)
