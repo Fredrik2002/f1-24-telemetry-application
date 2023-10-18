@@ -1,8 +1,9 @@
-import math
-from tkinter import *
-from tkinter import ttk
+from ttkbootstrap import Window, Notebook, Frame, Canvas, Menu
+from tkinter import Label
 
-screen = Tk()
+screen = Window(themename="darkly")
+
+import math
 from packet_management import *
 import json
 import time
@@ -19,33 +20,28 @@ def init_20_players():
 
 
 def update_motion(packet):  # Packet 0
+    if not created_map:
+        create_map()
     for i in range(22):
         if LISTE_JOUEURS[i].worldPositionX != 0:
             LISTE_JOUEURS[i].Xmove = packet.m_car_motion_data[i].m_world_position_x - LISTE_JOUEURS[i].worldPositionX
             LISTE_JOUEURS[i].Zmove = packet.m_car_motion_data[i].m_world_position_z - LISTE_JOUEURS[i].worldPositionZ
         LISTE_JOUEURS[i].worldPositionX = packet.m_car_motion_data[i].m_world_position_x
         LISTE_JOUEURS[i].worldPositionZ = packet.m_car_motion_data[i].m_world_position_z
-    if clicked_button == 4:
-        update_map()
+    update_map()
 
 
 def update_session(packet):  # Packet 1
-    global session
+    global created_map
     session.trackTemperature = packet.m_weather_forecast_samples[0].m_track_temperature
     session.airTemperature = packet.m_weather_forecast_samples[0].m_air_temperature
     session.nbLaps = packet.m_total_laps
     session.Seance = packet.m_session_type
     session.time_left = packet.m_session_time_left
-    if session.track != packet.m_track_id:
+    if session.track != packet.m_track_id: # Track has changed
         session.track = packet.m_track_id
-        if clicked_button == 4:
-            for element in main_frame.winfo_children():
-                element.destroy()
-            build_canvas()
-            create_map()
+        created_map=False
     session.marshalZones = packet.m_marshal_zones  # Array[21]
-    if clicked_button == 4:
-        session.update_marshal_zones(map_canvas)
     session.marshalZones[0].m_zone_start = session.marshalZones[0].m_zone_start - 1
     session.num_marshal_zones = packet.m_num_marshal_zones
     session.safetyCarStatus = packet.m_safety_car_status
@@ -60,15 +56,16 @@ def update_session(packet):  # Packet 1
 
 
 def create_map():
+    global created_map
     if session.trackLength==0:
         return
-    build_canvas()
     cmi = 1
     L0 = []
     L = []
     name, d, x_const, z_const = track_dictionary[session.track]
     with open(f"tracks/{name}_2020_racingline.txt", "r") as file:
         for index, line in enumerate(file):
+            created_map = True
             if index not in [0, 1]:
                 dist, z, x, y, _, _ = line.strip().split(",")
                 if cmi == 1:
@@ -107,29 +104,17 @@ def update_map():
 def draw_title():
     top_label1.config(text=session.title_display())
     top_label2.config(text=safetyCarStatusDict[session.safetyCarStatus])
-    if session.safetyCarStatus == 0:
-        top_label2.config(bg="green")
-    elif session.safetyCarStatus == 4:
-        top_label2.config(bg="red")
-    else:
-        top_label2.config(bg="yellow")
-
-
-
-def build_canvas():
-    global map_canvas
-    map_canvas = Canvas(main_frame, bg="pink")
-    map_canvas.pack(fill=BOTH, expand=YES)
-
-
-
-
-def close_window():
-    global running
-    running = False
+    match session.safetyCarStatus:
+        case 4:
+            top_label2.config(bg="red")
+        case 0:
+            top_label2.config(bg=screen.cget("background"))
+        case _:
+            top_label2.config(bg="yellow")
 
 
 def init_window():
+    global map_canvas
     screen.columnconfigure(0, weight=1)
     screen.rowconfigure(0, pad=75)
     screen.rowconfigure(1, weight=1)
@@ -139,17 +124,19 @@ def init_window():
     top_frame.grid(row=0, column=0, columnspan=2, sticky="nsew")
     main_frame.grid(row=1, column=0, sticky="nsew")
 
-    notebook = ttk.Notebook(main_frame)
+    notebook = Notebook(main_frame)
     notebook.pack(expand=True, fill="both")
 
-    LISTE_FRAMES.append(Custom_Frame(notebook, "Main Menu"))
-    LISTE_FRAMES.append(Custom_Frame(notebook, "Damage"))
-    LISTE_FRAMES.append(Custom_Frame(notebook, "Temperatures"))
-    LISTE_FRAMES.append(Custom_Frame(notebook, "Laps"))
-    LISTE_FRAMES.append(Custom_Frame(notebook, "ERS & Fuel"))
+    LISTE_FRAMES.append(Custom_Frame(notebook, "Main Menu", 1))
+    LISTE_FRAMES.append(Custom_Frame(notebook, "Damage", 2))
+    LISTE_FRAMES.append(Custom_Frame(notebook, "Temperatures", 3))
+    LISTE_FRAMES.append(Custom_Frame(notebook, "Laps", 4))
+    LISTE_FRAMES.append(Custom_Frame(notebook, "ERS & Fuel", 5))
     map = Frame(notebook)
     LISTE_FRAMES.append(map)
     map.pack(expand=True, fill="both")
+    map_canvas = Canvas(map)
+    map_canvas.pack(expand=True, fill='both')
 
     weather = Frame(notebook)
     LISTE_FRAMES.append(weather)
@@ -179,11 +166,14 @@ def init_window():
     screen.config(menu=menubar)
 
 
+def close_window():
+    global running
+    running = False
 '''
 indice 7,27,28,29
 21 = multiple warnings
 '''
-
+created_map = False
 WIDTH_POINTS = 6
 function_hashmap = {
     0: update_motion,
@@ -208,13 +198,11 @@ last_update = time.time()
 LISTE_FRAMES = []
 liste_button: list = ["Main Menu", "Damage", "Temperatures", "Laps", "Map", "ERS & Fuel", "Weather Forecast",
                               "Packet Reception"]
-clicked_button: int = 0
-L_points = []
 with open("settings.txt", "r") as f:
     dictionnary_settings = json.load(f)
 
-top_frame = Frame(screen, bg="green")
-main_frame = Frame(screen, bg="blue")
+top_frame = Frame(screen)
+main_frame = Frame(screen)
 
 top_label1 = Label(top_frame, text="Course ", bg="purple", font=("Arial", 24), padx=10)
 top_label2 = Label(top_frame, text="", bg="yellow", font=("Arial", 24), pady=100, padx=30, width=10)
@@ -236,7 +224,7 @@ while running:
         header, packet = a
         packet_received[header.m_packet_id]+=1
         function_hashmap[header.m_packet_id](packet)
-        #Mettre à jour chaque frame
+        update_frame(LISTE_FRAMES, LISTE_JOUEURS, session)
     if time.time() > last_update+1:
         last_update = time.time()
         session.packet_received = packet_received[:]
@@ -245,5 +233,5 @@ while running:
     screen.update_idletasks()
     
 
-listener.socket.close()
+listener[0].socket.close()
 quit()

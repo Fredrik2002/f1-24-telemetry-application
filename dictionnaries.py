@@ -1,5 +1,4 @@
 import datetime
-import pygame
 from PIL import Image, ImageTk
 
 def rgbtohex(r,g,b):
@@ -20,6 +19,7 @@ inter_picture = ImageTk.PhotoImage(Image.open("assets/inter_tyre.jpg").resize((2
 wet_picture = ImageTk.PhotoImage(Image.open("assets/wet_tyre.jpg").resize((20, 20)))
 
 black = "#000000"
+white = "#FFFFFF"
 green = "#00FF00"
 blue = "#0000FF"
 yellow = "#FFFF00"
@@ -73,7 +73,7 @@ track_dictionary = {
 }
 
 teams_color_dictionary = {
-    -1: "#000000",
+    -1: "#FFFFFF",
     0: "#00C7CD",
     1: "#FF0000",
     2: "#0000FF",

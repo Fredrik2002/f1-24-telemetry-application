@@ -1,4 +1,3 @@
-import pygame
 from dictionnaries import session_dictionary, conversion, track_dictionary, weather_dictionary, color_flag_dict
 
 

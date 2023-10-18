@@ -1,24 +1,23 @@
 from Session import Session
 from Player import Player
-from tkinter import *
 from dictionnaries import *
 import json
 from parser2023 import Listener
+import math
+import time
+from ttkbootstrap import Toplevel, Checkbutton, LEFT, Entry, IntVar, Button
+from tkinter import Message, Label
 
 LISTE_JOUEURS: list[Player] = []
 session: Session = Session()
 
 def update_lap_data(packet):  # Packet 2
     global tour_precedent, updated_standings
-    updated_standings = standings[:]
     mega_array = packet.m_lap_data
     for index in range(22):
         element = mega_array[index]
         joueur = LISTE_JOUEURS[index]
-        joueur.position = element.m_car_position
-
-        if joueur.teamId != -1 and joueur.teamId < 10 and joueur.aiControlled == 0:
-            updated_standings[joueur.teamId] += bareme_points[joueur.position]
+        joueur.position = element.m_car_position if element.m_car_position !=0 else 100
         joueur.lastLapTime = round(element.m_last_lap_time_in_ms, 3)
         joueur.pit = element.m_pit_status
         joueur.driverStatus = element.m_driver_status
@@ -48,9 +47,6 @@ def update_lap_data(packet):  # Packet 2
             joueur.lapDistance = math.floor(
                 element.m_lap_distance / session.trackLength * len(joueur.minisectors)) % len(joueur.minisectors)
             # Si element.lapDistance = trackLength, joueur.lapDistance = 100
-            if index == MnT_player_index:
-                # print(joueur.lapDistance)
-                pass
         except ZeroDivisionError:
             return
         if joueur.current_mini_sect != joueur.lapDistance:
@@ -206,3 +202,19 @@ def port_selection(dictionnary_settings, listener, PORT):
     win.bind('<Return>', lambda truc: button())
     b = Button(win, text="Confirm", font=("Arial", 16), command=button)
     b.grid(row=2, column=0, pady=10)
+
+def update_frame(LISTE_FRAMES, LISTE_JOUEURS, session):
+    for i in range(5):
+        LISTE_FRAMES[i].sort(LISTE_JOUEURS, session)
+
+
+
+
+
+
+
+
+
+
+
+

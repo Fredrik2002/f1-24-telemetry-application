@@ -1,8 +1,4 @@
-import pygame
-
 from dictionnaries import *
-
-#font = pygame.font.Font('Consolas.ttf', 16)
 
 
 class Player:
@@ -59,18 +55,18 @@ class Player:
         return f'{self.minisectors[self.lapDistance] - driver_in_front.minisectors[self.lapDistance]:.3f}'
 
     def printing(self, buttonId, liste_joueurs, session):
-        if buttonId == 0:  # Menu principal
+        if buttonId == 1:  # Menu principal
             if session in [5, 6, 7, 8, 9, 13]: # Qualif
                 return (
-                    f"P{self.position}, {self.name} Lap :{(self.currentLapTime / 1000):.3f} {ERS_dictionary[self.ERS_mode]},"
+                    f"P{self.position}, {self.name} Lap :{(self.currentLapTime / 1000)} {ERS_dictionary[self.ERS_mode]},"
                     f" num = {self.numero} Last lap : {conversion(self.lastLapTime, 2)}"
                     f" Fastest lap : {conversion(self.bestLapTime, 2)} {pit_dictionary[self.pit]}")
             else: #Course
-                return f"P{self.position : <10}{self.name:<25} {self.tyresAgeLaps:<3} tours " \
+                return f"P{self.position} {self.name} {self.tyresAgeLaps} tours " \
                        f"Gap :{self.gapTo(liste_joueurs[0])}s {self.ERS_pourcentage}% {ERS_dictionary[self.ERS_mode]} " \
                        f"Warnings = {self.warnings} num = {self.numero} {pit_dictionary[self.pit]} {DRS_dict[self.drs]} "
 
-        elif buttonId == 1:  # Dégâts
+        elif buttonId == 2:  # Dégâts
             return (f"P{self.position}, {self.name} "
                     f"usure = {self.tyre_wear}, FW = [{self.FrontLeftWingDamage},  "
                     f"{self.FrontRightWingDamage}] | "
@@ -80,14 +76,14 @@ class Player:
                     f"sidepod = {self.sidepodDamage} | "
                     f"{pit_dictionary[self.pit]}")
 
-        elif buttonId == 2:  # Températures
+        elif buttonId == 3:  # Températures
             return (
-                f"P{self.position}  {self.name}  RL : {self.tyres_temp_surface[0]}|{self.tyres_temp_inner[0]}, "
+                f"P{self.position}  {self.name},  RL : {self.tyres_temp_surface[0]}|{self.tyres_temp_inner[0]}, "
                 f"RR :{self.tyres_temp_surface[1]}|{self.tyres_temp_inner[1]} "
                 f"FL : {self.tyres_temp_surface[2]}|{self.tyres_temp_inner[2]}, "
                 f"FR : {self.tyres_temp_surface[3]}|{self.tyres_temp_inner[3]}, {pit_dictionary[self.pit]} ")
 
-        elif buttonId == 3:  # Laps
+        elif buttonId == 4:  # Laps
             return f"P{self.position}, {self.name} Last lap : {conversion(self.lastLapTime, 2)} {self.return_list_sectors()}" \
                    f"  Fastest lap : {conversion(self.bestLapTime, 2)} {self.bestLapSectors} {pit_dictionary[self.pit]}"
 
