@@ -1,0 +1,122 @@
+import pygame
+
+from dictionnaries import *
+
+#font = pygame.font.Font('Consolas.ttf', 16)
+
+
+class Player:
+    def __init__(self):
+        self.position: int = 0
+        self.tyre_wear = []
+        self.tyres = 0
+        self.warnings = 0
+        self.ERS_mode = -1
+        self.ERS_pourcentage = 0
+        self.fuelRemainingLaps = 0
+        self.fuelMix = 0
+        self.numero = 0
+        self.teamId = -1
+        self.pit: int = 0
+        self.FrontLeftWingDamage = 0
+        self.FrontRightWingDamage = 0
+        self.tyres_temp_inner = [0, 0, 0, 0]
+        self.tyres_temp_surface = [0, 0, 0, 0]
+        self.tyresAgeLaps = 0
+        self.lastLapTime: float = 0
+        self.currentSectors = [0] * 3
+        self.lastLapSectors = [0] * 3
+        self.bestLapSectors = [0] * 3
+        self.worldPositionX = 0
+        self.worldPositionZ = 0
+        self.penalties = 0
+        self.driverStatus = 0
+        self.bestLapTime = 0
+        self.drs: int = 0
+        self.yourTelemetry: int = 0
+        self.speed: int = 0
+        self.rearWingDamage = 0
+        self.floorDamage = 0
+        self.diffuserDamage = 0
+        self.sidepodDamage = 0
+        self.minisectors: list[float] = [0] * 100
+        self.lapDistance: int = 0
+        self.current_mini_sect: int = -1
+        self.name = " "
+        self.S200_reached = True
+        self.currentLapTime = 0
+        self.setup_array = []
+        self.oval = 0
+        self.Xmove = 0
+        self.Zmove = 0
+        self.etiquette = ""
+        self.aiControlled = -1
+
+    def __str__(self):
+        return str(self.position)
+
+    def gapTo(self, driver_in_front):
+        return f'{self.minisectors[self.lapDistance] - driver_in_front.minisectors[self.lapDistance]:.3f}'
+
+    def printing(self, buttonId, liste_joueurs, session):
+        if buttonId == 0:  # Menu principal
+            if session in [5, 6, 7, 8, 9, 13]: # Qualif
+                return (
+                    f"P{self.position}, {self.name} Lap :{(self.currentLapTime / 1000):.3f} {ERS_dictionary[self.ERS_mode]},"
+                    f" num = {self.numero} Last lap : {conversion(self.lastLapTime, 2)}"
+                    f" Fastest lap : {conversion(self.bestLapTime, 2)} {pit_dictionary[self.pit]}")
+            else: #Course
+                return f"P{self.position : <10}{self.name:<25} {self.tyresAgeLaps:<3} tours " \
+                       f"Gap :{self.gapTo(liste_joueurs[0])}s {self.ERS_pourcentage}% {ERS_dictionary[self.ERS_mode]} " \
+                       f"Warnings = {self.warnings} num = {self.numero} {pit_dictionary[self.pit]} {DRS_dict[self.drs]} "
+
+        elif buttonId == 1:  # Dégâts
+            return (f"P{self.position}, {self.name} "
+                    f"usure = {self.tyre_wear}, FW = [{self.FrontLeftWingDamage},  "
+                    f"{self.FrontRightWingDamage}] | "
+                    f"RW ={self.rearWingDamage} | "
+                    f"floor = {self.floorDamage} | "
+                    f"diffuser = {self.diffuserDamage} | "
+                    f"sidepod = {self.sidepodDamage} | "
+                    f"{pit_dictionary[self.pit]}")
+
+        elif buttonId == 2:  # Températures
+            return (
+                f"P{self.position}  {self.name}  RL : {self.tyres_temp_surface[0]}|{self.tyres_temp_inner[0]}, "
+                f"RR :{self.tyres_temp_surface[1]}|{self.tyres_temp_inner[1]} "
+                f"FL : {self.tyres_temp_surface[2]}|{self.tyres_temp_inner[2]}, "
+                f"FR : {self.tyres_temp_surface[3]}|{self.tyres_temp_inner[3]}, {pit_dictionary[self.pit]} ")
+
+        elif buttonId == 3:  # Laps
+            return f"P{self.position}, {self.name} Last lap : {conversion(self.lastLapTime, 2)} {self.return_list_sectors()}" \
+                   f"  Fastest lap : {conversion(self.bestLapTime, 2)} {self.bestLapSectors} {pit_dictionary[self.pit]}"
+
+        elif buttonId == 5:
+            return f"P{self.position}, {self.name} ERS = {self.ERS_pourcentage}% | {ERS_dictionary[self.ERS_mode]}  " \
+                   f"Fuel = {round(self.fuelRemainingLaps, 2)} tours | {fuel_dict[self.fuelMix]}, {self.penalties}s"
+
+    def is_not_on_lap(self):
+        return self.currentLapTime == 0 or (self.yourTelemetry==1 and self.ERS_mode == 0) or \
+               (self.currentSectors[0] + 1 > self.bestLapSectors[0] != 0) or \
+               (self.currentSectors[1] + 1 > self.bestLapSectors[1] != 0)
+
+    def gestion_qualif(self, MnT_team):
+        if MnT_team is None:
+            return "black"
+        else:
+            if self.teamId == MnT_team:
+                return "blue"
+            else:
+                return "green" if self.is_not_on_lap() else "red"
+
+    def get_team(self):
+        return teams_name_dictionary[self.teamId]
+
+    def get_number(self):
+        return self.numero
+
+    def get_name(self):
+        return self.name
+
+    def return_list_sectors(self):
+        return self.currentSectors
