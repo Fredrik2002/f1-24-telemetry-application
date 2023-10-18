@@ -11,8 +11,6 @@ class Custom_Frame(Frame): # Frame Tableau
         for i in range(20):
             frame = Frame(self, background="blue")
             frame.grid(row=i, column=0, sticky="nsew", pady=2, padx=5)
-            canvas = Canvas(frame, bg="green", width=20, height=20)
-            canvas.pack(side='left', padx=(0,5))
             label = Label(frame, text="Hello"+str(i))
             label.pack(side='left')
             self.liste_frame.append((frame, i))
