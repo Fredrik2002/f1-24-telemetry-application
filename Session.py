@@ -36,6 +36,7 @@ class Session:
         self.safetyCarStatus = 0
         self.trackLength = 0
         self.weatherList: list[WeatherForecastSample] = []
+        self.nb_weatherForecastSamples = 0
         self.weatherForecastAccuracy = 0
         self.startTime = 0
         self.nb_players = 22

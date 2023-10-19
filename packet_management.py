@@ -10,6 +10,47 @@ from tkinter import Message, Label
 
 LISTE_JOUEURS: list[Player] = []
 session: Session = Session()
+created_map = False
+WIDTH_POINTS = 6
+LISTE_FRAMES = []
+liste_button: list = ["Main Menu", "Damage", "Temperatures", "Laps", "Map", "ERS & Fuel", "Weather Forecast",
+                              "Packet Reception"]
+
+def update_motion(packet, map_canvas, *args):  # Packet 0
+    if not created_map:
+        create_map(map_canvas)
+    for i in range(22):
+        if LISTE_JOUEURS[i].worldPositionX != 0:
+            LISTE_JOUEURS[i].Xmove = packet.m_car_motion_data[i].m_world_position_x - LISTE_JOUEURS[i].worldPositionX
+            LISTE_JOUEURS[i].Zmove = packet.m_car_motion_data[i].m_world_position_z - LISTE_JOUEURS[i].worldPositionZ
+        LISTE_JOUEURS[i].worldPositionX = packet.m_car_motion_data[i].m_world_position_x
+        LISTE_JOUEURS[i].worldPositionZ = packet.m_car_motion_data[i].m_world_position_z
+    update_map(map_canvas)
+
+def update_session(packet, top_frame1, top_frame2, screen):  # Packet 1
+    global created_map
+    session.trackTemperature = packet.m_weather_forecast_samples[0].m_track_temperature
+    session.airTemperature = packet.m_weather_forecast_samples[0].m_air_temperature
+    session.nbLaps = packet.m_total_laps
+    session.Seance = packet.m_session_type
+    session.time_left = packet.m_session_time_left
+    if session.track != packet.m_track_id: # Track has changed
+        session.track = packet.m_track_id
+        created_map=False
+    session.marshalZones = packet.m_marshal_zones  # Array[21]
+    session.marshalZones[0].m_zone_start = session.marshalZones[0].m_zone_start - 1
+    session.num_marshal_zones = packet.m_num_marshal_zones
+    session.safetyCarStatus = packet.m_safety_car_status
+    session.trackLength = packet.m_track_length
+    if session.currentLap > session.nbLaps:
+        session.Finished = True
+    session.clear_slot()
+    session.nb_weatherForecastSamples = packet.m_num_weather_forecast_samples
+    for i in range(session.nb_weatherForecastSamples):
+        slot = packet.m_weather_forecast_samples[i]
+        session.add_slot(slot)
+    draw_title(top_frame1, top_frame2, screen)
+    update_frame6(session)
 
 def update_lap_data(packet):  # Packet 2
     global tour_precedent, updated_standings
@@ -89,6 +130,7 @@ def update_participants(packet):  # Packet 4
         session.nb_players = packet.m_num_active_cars
         if joueur.name in ['Player', 'Joueur']:
             joueur.name = teams_name_dictionary[joueur.teamId] + "#" + str(joueur.numero) + " "
+    update_frame(LISTE_FRAMES, LISTE_JOUEURS, session)
 
 def update_car_setups(packet): # Packet 5
     array = packet.m_car_setups
@@ -106,6 +148,7 @@ def update_car_telemetry(packet):  # Packet 6
         if joueur.speed >= 200 and not joueur.S200_reached:
             print(f"{joueur.position} {joueur.name}  = {time.time() - session.startTime}")
             joueur.S200_reached = True
+    update_frame(LISTE_FRAMES, LISTE_JOUEURS, session)
 
 def update_car_status(packet):  # Packet 7
     for index in range(22):
@@ -118,6 +161,7 @@ def update_car_status(packet):  # Packet 7
             joueur.tyres = element.m_visual_tyre_compound
         joueur.ERS_mode = element.m_ers_deploy_mode
         joueur.ERS_pourcentage = round(element.m_ers_store_energy / 40_000)
+    update_frame(LISTE_FRAMES, LISTE_JOUEURS, session)
 
 def update_car_damage(packet):  # Packet 10
     for index in range(22):
@@ -131,9 +175,69 @@ def update_car_damage(packet):  # Packet 10
         joueur.floorDamage = element.m_floor_damage
         joueur.diffuserDamage = element.m_diffuser_damage
         joueur.sidepodDamage = element.m_sidepod_damage
+    update_frame(LISTE_FRAMES, LISTE_JOUEURS, session)
 
-def nothing(packet):
+def nothing(packet):# Packet 8, 9, 11, 12, 13
     pass
+
+def create_map(map_canvas):
+    global created_map
+    if session.trackLength==0:
+        return
+    cmi = 1
+    L0 = []
+    L = []
+    name, d, x_const, z_const = track_dictionary[session.track]
+    with open(f"tracks/{name}_2020_racingline.txt", "r") as file:
+        for index, line in enumerate(file):
+            created_map = True
+            if index not in [0, 1]:
+                dist, z, x, y, _, _ = line.strip().split(",")
+                if cmi == 1:
+                    L0.append((float(z) / d + x_const, float(x) / d + z_const))
+                else:
+                    L.append((float(z) / d + x_const, float(x) / d + z_const))
+                if float(dist) / session.trackLength > session.marshalZones[cmi].m_zone_start and not (cmi==1 and len(session.segments)>3):
+                    cmi = (cmi + 1) % session.num_marshal_zones
+                    session.segments.append(map_canvas.create_line(L, width=3))
+                    L = []
+                L.append((float(z) / d + x_const, float(x) / d + z_const))
+    session.segments.insert(0, map_canvas.create_line(L0, width=3))
+    for joueur in LISTE_JOUEURS:
+        joueur.oval = map_canvas.create_oval(joueur.worldPositionX / d + x_const - WIDTH_POINTS,
+                                             joueur.worldPositionZ / d + z_const - WIDTH_POINTS,
+                                             joueur.worldPositionX / d + x_const + WIDTH_POINTS,
+                                             joueur.worldPositionZ / d + z_const + WIDTH_POINTS, outline="")
+        joueur.etiquette = map_canvas.create_text(joueur.worldPositionX / d + x_const + 25,
+                                                  joueur.worldPositionZ / d + z_const - 25,
+                                                  text=joueur.name, font=("Cousine", 13))
+
+def update_map(map_canvas):
+    _, d, x, z = track_dictionary[session.track]
+    for joueur in LISTE_JOUEURS:
+        if joueur.etiquette == "":
+            joueur.etiquette = map_canvas.create_text(joueur.worldPositionX / d + x, joueur.worldPositionZ / d + z,
+                                                      text=joueur.name)
+        if joueur.position != 0:
+            map_canvas.move(joueur.oval, joueur.Xmove / d, joueur.Zmove / d)
+            map_canvas.itemconfig(joueur.oval, fill=teams_color_dictionary[joueur.teamId])
+            map_canvas.move(joueur.etiquette, joueur.Xmove / d, joueur.Zmove / d)
+            map_canvas.itemconfig(joueur.etiquette, fill=teams_color_dictionary[joueur.teamId], text=joueur.name)
+
+def draw_title(top_label1, top_label2, screen):
+    top_label1.config(text=session.title_display())
+    top_label2.config(text=safetyCarStatusDict[session.safetyCarStatus])
+    match session.safetyCarStatus:
+        case 4:
+            top_label2.config(bg="red")
+        case 0:
+            top_label2.config(bg=screen.cget("background"))
+        case _:
+            top_label2.config(bg="yellow")
+
+def init_20_players():
+    for _ in range(22):
+        LISTE_JOUEURS.append(Player())
 
 def UDP_Redirect(dictionnary_settings, listener, PORT):
     win = Toplevel()
@@ -207,7 +311,8 @@ def update_frame(LISTE_FRAMES, LISTE_JOUEURS, session):
     for i in range(5):
         LISTE_FRAMES[i].sort(LISTE_JOUEURS, session)
 
-
+def update_frame6(session:Session):
+    LISTE_FRAMES[6].sort(session)
 
 
 

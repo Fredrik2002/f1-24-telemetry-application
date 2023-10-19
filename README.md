@@ -32,5 +32,6 @@ If you don't have datas to receive, don't worry : run the *utils/sender.py* file
 * Draw circuits by minisectors and light them to the right colors
 * Check glitch in CLM where a car gets in the middle
 * Add second enter button to validate setting change
+* Add asynchronous events to stop the data recording in *utils/receiver.py*
 
 

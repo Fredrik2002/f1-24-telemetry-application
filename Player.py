@@ -55,7 +55,7 @@ class Player:
         return f'{self.minisectors[self.lapDistance] - driver_in_front.minisectors[self.lapDistance]:.3f}'
 
     def printing(self, buttonId, liste_joueurs, session):
-        if buttonId == 1:  # Menu principal
+        if buttonId == 0:  # Menu principal
             if session in [5, 6, 7, 8, 9, 13]: # Qualif
                 return (
                     f"P{self.position}, {self.name} Lap :{(self.currentLapTime / 1000)} {ERS_dictionary[self.ERS_mode]},"
@@ -66,7 +66,7 @@ class Player:
                        f"Gap :{self.gapTo(liste_joueurs[0])}s {self.ERS_pourcentage}% {ERS_dictionary[self.ERS_mode]} " \
                        f"Warnings = {self.warnings} num = {self.numero} {pit_dictionary[self.pit]} {DRS_dict[self.drs]} "
 
-        elif buttonId == 2:  # Dégâts
+        elif buttonId == 1:  # Dégâts
             return (f"P{self.position}, {self.name} "
                     f"usure = {self.tyre_wear}, FW = [{self.FrontLeftWingDamage},  "
                     f"{self.FrontRightWingDamage}] | "
@@ -76,18 +76,18 @@ class Player:
                     f"sidepod = {self.sidepodDamage} | "
                     f"{pit_dictionary[self.pit]}")
 
-        elif buttonId == 3:  # Températures
+        elif buttonId == 2:  # Températures
             return (
                 f"P{self.position}  {self.name},  RL : {self.tyres_temp_surface[0]}|{self.tyres_temp_inner[0]}, "
                 f"RR :{self.tyres_temp_surface[1]}|{self.tyres_temp_inner[1]} "
                 f"FL : {self.tyres_temp_surface[2]}|{self.tyres_temp_inner[2]}, "
                 f"FR : {self.tyres_temp_surface[3]}|{self.tyres_temp_inner[3]}, {pit_dictionary[self.pit]} ")
 
-        elif buttonId == 4:  # Laps
+        elif buttonId == 3:  # Laps
             return f"P{self.position}, {self.name} Last lap : {conversion(self.lastLapTime, 2)} {self.return_list_sectors()}" \
                    f"  Fastest lap : {conversion(self.bestLapTime, 2)} {self.bestLapSectors} {pit_dictionary[self.pit]}"
 
-        elif buttonId == 5:
+        elif buttonId == 4:
             return f"P{self.position}, {self.name} ERS = {self.ERS_pourcentage}% | {ERS_dictionary[self.ERS_mode]}  " \
                    f"Fuel = {round(self.fuelRemainingLaps, 2)} tours | {fuel_dict[self.fuelMix]}, {self.penalties}s"
 
