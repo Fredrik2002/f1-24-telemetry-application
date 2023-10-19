@@ -1,5 +1,4 @@
 import datetime
-from PIL import Image, ImageTk
 
 def rgbtohex(r,g,b):
     return f'#{r:02x}{g:02x}{b:02x}'
@@ -12,12 +11,6 @@ def valid_ip_address(adress):
             drapeau = False
     return drapeau
 
-soft_picture = ImageTk.PhotoImage(Image.open("assets/soft_tyre.jpg").resize((20, 20)))
-medium_picture = ImageTk.PhotoImage(Image.open("assets/medium_tyre.png").resize((20, 20)))
-hard_picture = ImageTk.PhotoImage(Image.open("assets/hard_tyre.png").resize((20, 20)))
-inter_picture = ImageTk.PhotoImage(Image.open("assets/inter_tyre.jpg").resize((20, 20)))
-wet_picture = ImageTk.PhotoImage(Image.open("assets/wet_tyre.jpg").resize((20, 20)))
-
 black = "#000000"
 white = "#FFFFFF"
 green = "#00FF00"
@@ -29,14 +22,14 @@ gold = "#FFD700"
 
 
 tyres_dictionnary = {
-    16: soft_picture,
-    17: medium_picture,
-    18: hard_picture,
-    7: inter_picture,
-    8: wet_picture
+    16: "S",
+    17: "M",
+    18: "H",
+    7: "I",
+    8: "W"
 }
 
-track_dictionary = {
+track_dictionary = { #(track name, highNumber=Small on canvas, x_offset, y_offset)
     0: ("melbourne", 3.5, 300, 300),
     1: ("paul_ricard", 2.5, 400, 300),
     2: ("shanghai", 2, 300, 300),
