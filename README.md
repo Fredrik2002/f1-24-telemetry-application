@@ -29,10 +29,10 @@ If you don't have datas to receive, don't worry : run the *utils/sender.py* file
 
 ## To do list
 * Draw new Australia, Imola, Las Vegas, new Abu Dhabi, Losail
-* Draw circuits by minisectors and light them to the right colors
 * Check glitch in CLM where a car gets in the middle
 * Add second enter button to validate setting change
 * Add asynchronous events to stop the data recording in *utils/receiver.py*
 * Add estimated pit exit position on the map
+* Add tyres type ! (VITAL)
 
 

@@ -41,7 +41,6 @@ class Session:
         self.startTime = 0
         self.nb_players = 22
         self.formationLapDone = False
-        self.nb_zones = 0
         self.circuit_changed = False
         self.segments = []
         self.num_marshal_zones = 0

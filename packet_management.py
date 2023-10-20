@@ -50,7 +50,7 @@ def update_session(packet, top_frame1, top_frame2, screen):  # Packet 1
         slot = packet.m_weather_forecast_samples[i]
         session.add_slot(slot)
     draw_title(top_frame1, top_frame2, screen)
-    update_frame6(session)
+    update_frame6()
 
 def update_lap_data(packet):  # Packet 2
     global tour_precedent, updated_standings
@@ -193,15 +193,15 @@ def create_map(map_canvas):
             created_map = True
             if index not in [0, 1]:
                 dist, z, x, y, _, _ = line.strip().split(",")
-                if cmi == 1:
+                if cmi == 1 or cmi == session.num_marshal_zones:
                     L0.append((float(z) / d + x_const, float(x) / d + z_const))
                 else:
                     L.append((float(z) / d + x_const, float(x) / d + z_const))
-                if float(dist) / session.trackLength > session.marshalZones[cmi].m_zone_start and not (cmi==1 and len(session.segments)>3):
-                    cmi = (cmi + 1) % session.num_marshal_zones
-                    session.segments.append(map_canvas.create_line(L, width=3))
-                    L = []
-                L.append((float(z) / d + x_const, float(x) / d + z_const))
+                if (float(dist) / session.trackLength) > session.marshalZones[cmi].m_zone_start and cmi!=session.num_marshal_zones:
+                    if cmi != 1:
+                        session.segments.append(map_canvas.create_line(L, width=3))
+                        L = []
+                    cmi +=1
     session.segments.insert(0, map_canvas.create_line(L0, width=3))
     for joueur in LISTE_JOUEURS:
         joueur.oval = map_canvas.create_oval(joueur.worldPositionX / d + x_const - WIDTH_POINTS,
@@ -223,6 +223,8 @@ def update_map(map_canvas):
             map_canvas.itemconfig(joueur.oval, fill=teams_color_dictionary[joueur.teamId])
             map_canvas.move(joueur.etiquette, joueur.Xmove / d, joueur.Zmove / d)
             map_canvas.itemconfig(joueur.etiquette, fill=teams_color_dictionary[joueur.teamId], text=joueur.name)
+    for i in range(len(session.segments)):
+        map_canvas.itemconfig(session.segments[i], fill=color_flag_dict[session.marshalZones[i].m_zone_flag])
 
 def draw_title(top_label1, top_label2, screen):
     top_label1.config(text=session.title_display())
@@ -313,7 +315,7 @@ def update_frame(LISTE_FRAMES, LISTE_JOUEURS, session):
     for i in range(5):
         LISTE_FRAMES[i].sort(LISTE_JOUEURS, session)
 
-def update_frame6(session:Session):
+def update_frame6():
     LISTE_FRAMES[6].sort(session)
 
 
