@@ -5,8 +5,8 @@ import json
 from parser2023 import Listener
 import math
 import time
-from ttkbootstrap import Toplevel, Checkbutton, LEFT, Entry, IntVar, Button
-from tkinter import Message, Label
+from ttkbootstrap import Toplevel, LEFT, Entry, IntVar, Button
+from tkinter import Message, Label, Checkbutton, Button
 
 LISTE_JOUEURS: list[Player] = []
 session: Session = Session()
@@ -242,7 +242,7 @@ def init_20_players():
 def UDP_Redirect(dictionnary_settings, listener, PORT):
     win = Toplevel()
     win.grab_set()
-    win.wm_title("Port Selection")
+    win.wm_title("UDP Redirect")
     var1 = IntVar(value=dictionnary_settings["redirect_active"])
     checkbutton = Checkbutton(win, text="UDP Redirect", variable=var1, onvalue=1, offvalue=0, font=("Arial", 16))
     checkbutton.grid(row=0, column=0, sticky="W", padx=30, pady=10)
@@ -250,7 +250,7 @@ def UDP_Redirect(dictionnary_settings, listener, PORT):
     e1 = Entry(win, font=("Arial", 16))
     e1.insert(0, dictionnary_settings["ip_adress"])
     e1.grid(row=2, column=0)
-    Message(win, text="Port", font=("Arial", 16)).grid(row=3, column=0, pady=(10, 5))
+    Label(win, text="Port", font=("Arial", 16)).grid(row=3, column=0, pady=(10, 5))
     e2 = Entry(win, font=("Arial", 16))
     e2.insert(0, dictionnary_settings["redirect_port"])
     e2.grid(row=4, column=0, padx=30)
@@ -276,6 +276,7 @@ def UDP_Redirect(dictionnary_settings, listener, PORT):
             win.destroy()
 
     win.bind('<Return>', lambda e: button())
+    win.bind('<KP_Enter>', lambda e: button())
     b = Button(win, text="Confirm", font=("Arial", 16), command=button)
     b.grid(row=5, column=0, pady=10)
 
@@ -304,6 +305,7 @@ def port_selection(dictionnary_settings, listener, PORT):
             win.destroy()
 
     win.bind('<Return>', lambda truc: button())
+    win.bind('<KP_Enter>', lambda e: button())
     b = Button(win, text="Confirm", font=("Arial", 16), command=button)
     b.grid(row=2, column=0, pady=10)
 
