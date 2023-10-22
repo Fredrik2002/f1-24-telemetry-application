@@ -32,5 +32,5 @@ If you don't have datas to receive, don't worry : run the *utils/sender.py* file
 * Check glitch in CLM where a car gets in the middle
 * Add estimated pit exit position on the map
 * Add tyres type ! (VITAL)
-
+* Bug : can't redirect data
 
