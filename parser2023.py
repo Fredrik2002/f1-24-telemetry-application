@@ -19,7 +19,7 @@ class Listener:
         if packet is None:
             try:
                 packet = self.socket.recv(2048)
-                if self.redirect == 2:
+                if self.redirect == 1:
                     self.socket.sendto(packet, (self.address, self.redirect_port))
             except BlockingIOError:
                 return None

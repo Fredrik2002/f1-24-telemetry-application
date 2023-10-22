@@ -1,1 +1,1 @@
-{"port": "20777", "redirect_active": 1, "ip_adress": "78.118.228.123", "redirect_port": "20775"}
+{"port": "20777", "redirect_active": 1, "ip_adress": "127.0.0.1", "redirect_port": "20775"}

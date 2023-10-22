@@ -73,12 +73,10 @@ def update_lap_data(packet):  # Packet 2
 
         joueur.currentSectors = [float('%.3f' % (element.m_sector1_time_in_ms / 1000)),
                                  float('%.3f' % (element.m_sector2_time_in_ms / 1000)), 0]
-        if joueur.bestLapTime > element.m_last_lap_time_in_ms != 0 or LISTE_JOUEURS[
-            index].bestLapTime == 0:
+        if joueur.bestLapTime > element.m_last_lap_time_in_ms != 0 or joueur.bestLapTime == 0:
             joueur.bestLapTime = element.m_last_lap_time_in_ms
             joueur.bestLapSectors = joueur.lastLapSectors[:]
-        if joueur.bestLapTime < session.bestLapTime and element.m_last_lap_time_in_ms != 0 or \
-                joueur.bestLapTime == 0:
+        if joueur.bestLapTime < session.bestLapTime and element.m_last_lap_time_in_ms != 0 or joueur.bestLapTime == 0:
             session.bestLapTime = joueur.bestLapTime
             session.idxBestLapTime = index
         if element.m_car_position == 1:
@@ -185,7 +183,7 @@ def create_map(map_canvas):
     if session.trackLength==0:
         return
     cmi = 1
-    L0 = []
+    L0, L1 = [], []
     L = []
     name, d, x_const, z_const = track_dictionary[session.track]
     with open(f"tracks/{name}_2020_racingline.txt", "r") as file:
@@ -193,8 +191,10 @@ def create_map(map_canvas):
             created_map = True
             if index not in [0, 1]:
                 dist, z, x, y, _, _ = line.strip().split(",")
-                if cmi == 1 or cmi == session.num_marshal_zones:
+                if cmi == 1:
                     L0.append((float(z) / d + x_const, float(x) / d + z_const))
+                elif cmi == session.num_marshal_zones:
+                    L1.append((float(z) / d + x_const, float(x) / d + z_const))
                 else:
                     L.append((float(z) / d + x_const, float(x) / d + z_const))
                 if (float(dist) / session.trackLength) > session.marshalZones[cmi].m_zone_start and cmi!=session.num_marshal_zones:
@@ -202,7 +202,7 @@ def create_map(map_canvas):
                         session.segments.append(map_canvas.create_line(L, width=3))
                         L = []
                     cmi +=1
-    session.segments.insert(0, map_canvas.create_line(L0, width=3))
+    session.segments.insert(0, map_canvas.create_line(L1+L0, width=3))
     for joueur in LISTE_JOUEURS:
         joueur.oval = map_canvas.create_oval(joueur.worldPositionX / d + x_const - WIDTH_POINTS,
                                              joueur.worldPositionZ / d + z_const - WIDTH_POINTS,
@@ -223,8 +223,11 @@ def update_map(map_canvas):
             map_canvas.itemconfig(joueur.oval, fill=teams_color_dictionary[joueur.teamId])
             map_canvas.move(joueur.etiquette, joueur.Xmove / d, joueur.Zmove / d)
             map_canvas.itemconfig(joueur.etiquette, fill=teams_color_dictionary[joueur.teamId], text=joueur.name)
+    L = ["red", "green", "yellow", "white" ]
     for i in range(len(session.segments)):
-        map_canvas.itemconfig(session.segments[i], fill=color_flag_dict[session.marshalZones[i].m_zone_flag])
+        #map_canvas.itemconfig(session.segments[i], fill=color_flag_dict[session.marshalZones[i].m_zone_flag])
+        map_canvas.itemconfig(session.segments[i], fill=L[i%4])
+        map_canvas.itemconfig(session.segments[0], fill="purple")
 
 def draw_title(top_label1, top_label2, screen):
     top_label1.config(text=session.title_display())

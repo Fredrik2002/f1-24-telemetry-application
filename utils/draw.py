@@ -1,8 +1,5 @@
-from parser2023 import Listener
-track = "Las_Vegas"
-file = open(f"tracks/{track}_2020_racingline.txt", "x")
-file.close()
-
+from . import parser2023
+track = "abu_dhabi_fool"
 
 PORT=20777
 file=open(f"tracks/{track}_2020_racingline.txt", "a")
@@ -18,7 +15,7 @@ while condition:
     a = listener.get()
     if a is not None:
         header, packet = a
-        if header.m_packet_id == 2 and packet.m_lap_data[car_index].m_lap_distance<1_000:
+        if header.m_packet_id == 2 and packet.m_lap_data[car_index].m_lap_distance<500:
             condition=False
 
 print("démarrage")
@@ -33,10 +30,6 @@ while running:
             packet.m_car_motion_data[car_index].m_world_position_y)
         elif header.m_packet_id == 2:
             lap_packet = packet.m_lap_data[car_index].m_lap_distance, packet.m_lap_data[car_index].m_sector
-            if last_lap_distance>lap_packet[car_index]:
-                file.close()
-                print("terminé")
-                exit()
             last_lap_distance=lap_packet[car_index]
         elif header.m_packet_id == 6:
             tel_packet = packet.m_car_telemetry_data[car_index].m_drs
@@ -46,6 +39,8 @@ while running:
             e = tel_packet
             file.write(f"{a},{c},{b},{d},{e},{f}\n")
             lap_packet, motion_packet, tel_packet = None, None, None
+
+listener.close()
 
 
 
