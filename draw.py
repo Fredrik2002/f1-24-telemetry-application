@@ -1,4 +1,4 @@
-from . import parser2023
+from parser2023 import Listener
 track = "abu_dhabi_fool"
 
 PORT=20777
