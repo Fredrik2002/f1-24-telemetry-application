@@ -16,7 +16,7 @@ If you don't have datas to receive, don't worry : run the *utils/sender.py* file
 * utils :
     * *sender.py* : Send sample datas to a given port and a given IP address
     * draw.py : If you run this file before the beginning of a lap, it will 'draw' the track by saving all of player's car's positions within the given file
-    * *receiver.py* : Stores packets received in a list, and stores the list in a file (such as *data_samples/data_2023.txt*)
+    * *receiver.py* : Stores packets received in a list, and stores the list in a file (such as *data_samples/data_2023.txt*). 1min of recording ~= 1Mo of data
     * *serveur.py* Receives datas from different ports and redirect them to direct IP addresses
     * *calculateur.py* : Doesn't work for now
 * *Telemetry.py* : Main application you have to run
@@ -31,7 +31,6 @@ If you don't have datas to receive, don't worry : run the *utils/sender.py* file
 * Draw new Australia, Imola, Las Vegas, new Abu Dhabi, Losail
 * Check glitch in CLM where a car gets in the middle
 * Add second enter button to validate setting change
-* Add asynchronous events to stop the data recording in *utils/receiver.py*
 * Add estimated pit exit position on the map
 * Add tyres type ! (VITAL)
 
