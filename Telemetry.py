@@ -87,10 +87,10 @@ init_20_players()
 
 running = True
 PORT = [int(dictionnary_settings["port"])]
-listener = [Listener(port=PORT[0],
+listener = Listener(port=PORT[0],
                     redirect=dictionnary_settings["redirect_active"],
                     adress=dictionnary_settings["ip_adress"],
-                    redirect_port=int(dictionnary_settings["redirect_port"]))]
+                    redirect_port=int(dictionnary_settings["redirect_port"]))
 
 function_hashmap = { #PacketId : (fonction, arguments)
     0: (update_motion, (map_canvas, None)),
@@ -111,7 +111,7 @@ function_hashmap = { #PacketId : (fonction, arguments)
 }
 
 while running:
-    a = listener[0].get()
+    a = listener.get()
     if a is not None:
         header, packet = a
         packet_received[header.m_packet_id]+=1
@@ -119,12 +119,12 @@ while running:
         func(packet, *args)
     if time.time() > last_update+1:
         last_update = time.time()
-        LISTE_FRAMES[7].sort(packet_received)
+        LISTE_FRAMES[7].sort(packet_received) #Packet Received tab
         session.packet_received = packet_received[:]
         packet_received = [0]*14
     screen.update()
     screen.update_idletasks()
     
 
-listener[0].socket.close()
+listener.socket.close()
 quit()

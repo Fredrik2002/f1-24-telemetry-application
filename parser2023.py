@@ -26,6 +26,12 @@ class Listener:
 
         header = PacketHeader.from_buffer_copy(packet)
         return header, HEADER_FIELD_TO_PACKET_TYPE[header.m_packet_id].from_buffer_copy(packet)
+    
+    def __str__(self) -> str:
+        return str(self.__dict__)
+    
+    def __repr__(self) -> str:
+        return str(self.__dict__)
 
 
 class PacketMixin(object):
@@ -66,7 +72,7 @@ class PacketMixin(object):
 
     def to_json(self):
         """Returns a ``str`` of sorted JSON derived from _fields_"""
-        return to_json(self.to_dict())
+        return str(self.to_dict())
 
     def _format_type(self, value):
         """A type helper to format values"""

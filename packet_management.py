@@ -266,8 +266,10 @@ def UDP_Redirect(dictionnary_settings, listener, PORT):
             Label(win, text="IP Address incorrect", fg="red", font=("Arial", 16)).grid(
                 row=6, column=0)
         else:
-            listener[0].socket.close()
-            listener[0] = Listener(port=int(PORT[0]), redirect=var1, adress=e1.get(), redirect_port=int(e2.get()))
+            listener.port = int(PORT[0])
+            listener.redirect = int(var1.get())
+            listener.adress = e1.get()
+            listener.redirect_port = int(e2.get())
             Label(win, text="").grid(row=3, column=0)
 
             dictionnary_settings["redirect_active"] = var1.get()
@@ -297,16 +299,15 @@ def port_selection(dictionnary_settings, listener, PORT):
             Message(win, text="The PORT must be an integer between 1000 and 65536", fg="red", font=("Arial", 16)).grid(
                 row=3, column=0)
         else:
-            print(int(PORT[0]))
-            listener[0].socket.close()
-            listener[0] = Listener(port=int(PORT[0]))
+            listener.socket.close()
+            listener.port = int(PORT[0])
             Label(win, text="").grid(row=3, column=0)
             dictionnary_settings["port"] = str(PORT[0])
             with open("settings.txt", "w") as f:
                 json.dump(dictionnary_settings, f)
             win.destroy()
 
-    win.bind('<Return>', lambda truc: button())
+    win.bind('<Return>', lambda e: button())
     win.bind('<KP_Enter>', lambda e: button())
     b = Button(win, text="Confirm", font=("Arial", 16), command=button)
     b.grid(row=2, column=0, pady=10)
