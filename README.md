@@ -28,9 +28,8 @@ If you don't have datas to receive, don't worry : run the *utils/sender.py* file
 * *settings.txt* : This files saves the previous connection settings (so you don't have to enter the same port selection and UDP redirection every time). Do not touch unless you know what you are doing
 
 ## To do list
-* Check glitch in CLM where a car gets in the middle
+* Check glitch in CLM where a car gets in the middle (Removed AFK cars ?)
 * Add estimated pit exit position on the map
-* Add tyres type ! (VITAL)
 * Bug : can't redirect data
 * Erase previous track when track changes
 * Draw players' wheel

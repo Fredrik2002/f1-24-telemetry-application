@@ -1,7 +1,7 @@
 from ttkbootstrap import Frame
 from tkinter import Label
 from Player import Player
-from dictionnaries import teams_color_dictionary, packetDictionnary
+from dictionnaries import teams_color_dictionary, packetDictionnary, tyres_dictionnary, tyres_color_dictionnary
 from Session import Session
 
 
@@ -13,7 +13,6 @@ class Custom_Frame(Frame): # Frame Tableau
         self.id = id
         self.n_lines = n_lines
         self.liste_frame = []
-        self.liste_label = []
         for i in range(n_lines):
             frame = Frame(self)
             frame.grid(row=i, column=0, sticky="nsew", pady=2, padx=5)
@@ -26,16 +25,26 @@ class Custom_Frame(Frame): # Frame Tableau
 class Players_Frame(Custom_Frame):
     def __init__(self, parent, name, id):
         super().__init__(parent, name, id, 20)
+        self.label_tyres = []
+        for i in range(self.n_lines):
+            label = Label(self.liste_frame[i][0], text="S", font="Helvetica 12", fg="#FF0000")
+            label.pack(side='left')
+            self.liste_frame[i][1].pack_forget()
+            self.liste_frame[i][1].pack(side='left')
+            self.label_tyres.append(label)
 
     def sort(self, LISTE_JOUEURS:list[Player], session):
         self.liste_frame.sort(key=lambda e : LISTE_JOUEURS[e[2]].position)
         for i in range(self.n_lines):
             frame, label, j = self.liste_frame[i]
+            joueur = LISTE_JOUEURS[j]
             frame.grid(row=i, column=0)
-            if LISTE_JOUEURS[j].position != 100:
-                label.config(text=LISTE_JOUEURS[j].printing(self.id, LISTE_JOUEURS, session.Seance), fg=teams_color_dictionary[LISTE_JOUEURS[j].teamId])
+            if joueur.position != 100:
+                label.config(text=joueur.printing(self.id, LISTE_JOUEURS, session.Seance), fg=teams_color_dictionary[joueur.teamId])
+                self.label_tyres[i].config(text=tyres_dictionnary[joueur.tyres], fg=tyres_color_dictionnary[joueur.tyres])
             else:
                 label.config(text="")
+                self.label_tyres[i].config(text="")
 
 class Packet_Reception_Frame(Custom_Frame):
     def __init__(self, parent, name, id):

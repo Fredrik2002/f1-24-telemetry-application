@@ -22,11 +22,21 @@ gold = "#FFD700"
 
 
 tyres_dictionnary = {
+    0:"S",
     16: "S",
     17: "M",
     18: "H",
     7: "I",
     8: "W"
+}
+
+tyres_color_dictionnary = {
+    0:"#FF0000",
+    16: "#FF0000",
+    17: "#00FFFF",
+    18: "#FFFFFF",
+    7: "#00FF00",
+    8: "#0000FF"
 }
 
 track_dictionary = { #(track name, highNumber=Small on canvas, x_offset, y_offset)
@@ -184,14 +194,17 @@ def conversion(millis, mode):  # mode 1 = titre, mode 2 = last lap
     elif mode == 2:
         seconds, millis = millis // 1000, millis%1000
         minutes, seconds = seconds // 60, seconds%60
-        if seconds // 10 == 0:
-            seconds = "0" + str(seconds)
-        if millis//100 == 0:
-            millis="0"+str(millis)
-        elif millis//10 == 0:
-            millis="00"+str(millis)
 
-        return f"{minutes}:{seconds}.{millis}"
+        if millis//10 == 0:
+            millis="00"+str(millis)
+        elif millis//100 == 0:
+            millis="0"+str(millis)
+        
+        if minutes != 0:
+            return f"{minutes}:{seconds}.{millis}"
+        else:
+            return f"{seconds}.{millis}"
+
 
 
 def file_len(fname):

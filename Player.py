@@ -58,7 +58,7 @@ class Player:
         if buttonId == 0:  # Menu principal
             if session in [5, 6, 7, 8, 9, 13]: # Qualif
                 return (
-                    f"P{self.position}, {self.name} Lap :{(self.currentLapTime / 1000)} {ERS_dictionary[self.ERS_mode]},"
+                    f"P{self.position}, {self.name} Lap :{conversion(self.currentLapTime, 2)} {ERS_dictionary[self.ERS_mode]},"
                     f" num = {self.numero} Last lap : {conversion(self.lastLapTime, 2)}"
                     f" Fastest lap : {conversion(self.bestLapTime, 2)} {pit_dictionary[self.pit]}")
             else: #Course
