@@ -27,7 +27,7 @@ def update_motion(packet, map_canvas, *args):  # Packet 0
         LISTE_JOUEURS[i].worldPositionZ = packet.m_car_motion_data[i].m_world_position_z
     update_map(map_canvas)
 
-def update_session(packet, top_frame1, top_frame2, screen):  # Packet 1
+def update_session(packet, top_frame1, top_frame2, screen, map_canvas):  # Packet 1
     global created_map
     session.trackTemperature = packet.m_weather_forecast_samples[0].m_track_temperature
     session.airTemperature = packet.m_weather_forecast_samples[0].m_air_temperature
@@ -37,6 +37,7 @@ def update_session(packet, top_frame1, top_frame2, screen):  # Packet 1
     if session.track != packet.m_track_id: # Track has changed
         session.track = packet.m_track_id
         created_map=False
+        delete_map(map_canvas)
     session.marshalZones = packet.m_marshal_zones  # Array[21]
     session.marshalZones[0].m_zone_start = session.marshalZones[0].m_zone_start - 1
     session.num_marshal_zones = packet.m_num_marshal_zones
@@ -211,6 +212,13 @@ def create_map(map_canvas):
         joueur.etiquette = map_canvas.create_text(joueur.worldPositionX / d + x_const + 25,
                                                   joueur.worldPositionZ / d + z_const - 25,
                                                   text=joueur.name, font=("Cousine", 13))
+
+def delete_map(map_canvas):
+    for element in session.segments:
+        map_canvas.remove(element)
+    for joueur in LISTE_JOUEURS:
+        map_canvas.remove(joueur.oval)
+        map_canvas.remove(joueur.etiquette)
 
 def update_map(map_canvas):
     _, d, x, z = track_dictionary[session.track]

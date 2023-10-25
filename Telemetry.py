@@ -1,5 +1,6 @@
 from ttkbootstrap import Window, Notebook, Frame, Canvas, Menu
 from tkinter import Label
+import sys
 
 screen = Window(themename="darkly")
 
@@ -76,6 +77,9 @@ last_update = time.time()
 with open("settings.txt", "r") as f:
     dictionnary_settings = json.load(f)
 
+if len(sys.argv)==2:
+    dictionnary_settings["port"] = int(sys.argv[1])
+
 top_frame = Frame(screen)
 main_frame = Frame(screen)
 
@@ -94,7 +98,7 @@ listener = Listener(port=PORT[0],
 
 function_hashmap = { #PacketId : (fonction, arguments)
     0: (update_motion, (map_canvas, None)),
-    1: (update_session, (top_label1, top_label2, screen)),
+    1: (update_session, (top_label1, top_label2, screen, map_canvas)),
     2: (update_lap_data, ()),
     3: (warnings, ()),
     4: (update_participants, ()),

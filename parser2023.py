@@ -21,7 +21,13 @@ class Listener:
                 packet = self.socket.recv(2048)
                 if self.redirect == 1:
                     self.socket.sendto(packet, (self.address, self.redirect_port))
-            except BlockingIOError:
+            except ConnectionResetError: #Thrown when redirecting on a localhost port that does not read the datas
+                print(f"{self.address}:{self.redirect_port} is not ready to receive datas !")
+                return None
+            except OSError as e:
+                print(e)
+                return None
+            except:
                 return None
 
         header = PacketHeader.from_buffer_copy(packet)

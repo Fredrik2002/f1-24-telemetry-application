@@ -194,6 +194,8 @@ def conversion(millis, mode):  # mode 1 = titre, mode 2 = last lap
     elif mode == 2:
         seconds, millis = millis // 1000, millis%1000
         minutes, seconds = seconds // 60, seconds%60
+        if (minutes!=0 or seconds!=0 or millis!=0) and (minutes>=0 and seconds<10):
+            seconds = "0"+str(seconds)
 
         if millis//10 == 0:
             millis="00"+str(millis)
