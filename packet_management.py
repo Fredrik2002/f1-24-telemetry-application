@@ -215,10 +215,10 @@ def create_map(map_canvas):
 
 def delete_map(map_canvas):
     for element in session.segments:
-        map_canvas.remove(element)
+        map_canvas.delete(element)
     for joueur in LISTE_JOUEURS:
-        map_canvas.remove(joueur.oval)
-        map_canvas.remove(joueur.etiquette)
+        map_canvas.delete(joueur.oval)
+        map_canvas.delete(joueur.etiquette)
 
 def update_map(map_canvas):
     _, d, x, z = track_dictionary[session.track]
