@@ -41,7 +41,8 @@ def update_session(packet, top_frame1, top_frame2, screen, map_canvas):  # Packe
     session.marshalZones = packet.m_marshal_zones  # Array[21]
     session.marshalZones[0].m_zone_start = session.marshalZones[0].m_zone_start - 1
     session.num_marshal_zones = packet.m_num_marshal_zones
-    session.safetyCarStatus = packet.m_safety_car_status
+    #session.safetyCarStatus = packet.m_safety_car_status
+    session.safetyCarStatus = 2
     session.trackLength = packet.m_track_length
     if session.currentLap > session.nbLaps:
         session.Finished = True
@@ -167,7 +168,7 @@ def update_car_damage(packet):  # Packet 10
         element = packet.m_car_damage_data[index]
         joueur = LISTE_JOUEURS[index]
         joueur.tyre_wear = list(element.m_tyres_wear)
-        joueur.tyre_wear = [round(truc, 2) for truc in joueur.tyre_wear]
+        joueur.tyre_wear = ["%.2f"%truc for truc in joueur.tyre_wear]
         joueur.FrontLeftWingDamage = element.m_front_left_wing_damage
         joueur.FrontRightWingDamage = element.m_front_right_wing_damage
         joueur.rearWingDamage = element.m_rear_wing_damage
@@ -238,7 +239,7 @@ def update_map(map_canvas):
         map_canvas.itemconfig(session.segments[0], fill="purple")
 
 def draw_title(top_label1, top_label2, screen):
-    top_label1.config(text=session.title_display())
+    top_label1.config(text=session.title_display(), bg="purple")
     top_label2.config(text=safetyCarStatusDict[session.safetyCarStatus])
     match session.safetyCarStatus:
         case 4:
@@ -246,7 +247,7 @@ def draw_title(top_label1, top_label2, screen):
         case 0:
             top_label2.config(bg=screen.cget("background"))
         case _:
-            top_label2.config(bg="yellow")
+            top_label2.config(bg="#FFD700")
 
 def init_20_players():
     for _ in range(22):
@@ -324,11 +325,16 @@ def port_selection(dictionnary_settings, listener, PORT):
     b.grid(row=2, column=0, pady=10)
 
 def update_frame(LISTE_FRAMES, LISTE_JOUEURS, session):
+    sortedlist = sorted(LISTE_JOUEURS, key = lambda x : x.position if x.position != 0 else 100) 
     for i in range(5):
-        LISTE_FRAMES[i].sort(LISTE_JOUEURS, session)
+        LISTE_FRAMES[i].sort(sortedlist, session)
 
 def update_frame6():
-    LISTE_FRAMES[6].sort(session)
+    try:
+        LISTE_FRAMES[6].sort(session)
+    except Exception as e:
+        print("No weather to display")
+        print(e)
 
 
 

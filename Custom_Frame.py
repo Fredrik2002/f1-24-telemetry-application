@@ -31,20 +31,21 @@ class Players_Frame(Custom_Frame):
             label.pack(side='left')
             self.liste_frame[i][1].pack_forget()
             self.liste_frame[i][1].pack(side='left')
-            self.label_tyres.append(label)
+            self.label_tyres.append((label, i))
 
     def sort(self, LISTE_JOUEURS:list[Player], session):
         self.liste_frame.sort(key=lambda e : LISTE_JOUEURS[e[2]].position)
+        self.label_tyres.sort(key=lambda e : LISTE_JOUEURS[e[1]].position)
         for i in range(self.n_lines):
             frame, label, j = self.liste_frame[i]
             joueur = LISTE_JOUEURS[j]
             frame.grid(row=i, column=0)
             if joueur.position != 100:
                 label.config(text=joueur.printing(self.id, LISTE_JOUEURS, session.Seance), fg=teams_color_dictionary[joueur.teamId])
-                self.label_tyres[i].config(text=tyres_dictionnary[joueur.tyres], fg=tyres_color_dictionnary[joueur.tyres])
+                self.label_tyres[i][0].config(text=tyres_dictionnary[joueur.tyres], fg=tyres_color_dictionnary[joueur.tyres])
             else:
                 label.config(text="")
-                self.label_tyres[i].config(text="")
+                self.label_tyres[i][0].config(text="")
 
 class Packet_Reception_Frame(Custom_Frame):
     def __init__(self, parent, name, id):

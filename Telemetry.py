@@ -20,7 +20,7 @@ def init_window():
 
     screen.title("Telemetry Application")
 
-    top_frame.grid(row=0, column=0, columnspan=2, sticky="nsew")
+    top_frame.grid(row=0, column=0, columnspan=3, sticky="nsew")
     main_frame.grid(row=1, column=0, sticky="nsew")
 
     notebook = Notebook(main_frame)
@@ -51,7 +51,7 @@ def init_window():
     top_label2.place(relx=1, rely=0.5, anchor='e')
     top_frame.columnconfigure(0, weight=3)
 
-    screen.geometry("1080x700")
+    screen.geometry("1480x800")
     screen.protocol("WM_DELETE_WINDOW", close_window)
 
     menubar = Menu(screen)
@@ -83,7 +83,7 @@ if len(sys.argv)==2:
 top_frame = Frame(screen)
 main_frame = Frame(screen)
 
-top_label1 = Label(top_frame, text="Course ", bg="purple", font=("Arial", 24), padx=10)
+top_label1 = Label(top_frame, text="Course ", bg="yellow", font=("Arial", 24), padx=10)
 top_label2 = Label(top_frame, text="", bg="yellow", font=("Arial", 24), pady=100, padx=30, width=10)
 
 init_window()
