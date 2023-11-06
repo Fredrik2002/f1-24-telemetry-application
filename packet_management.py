@@ -231,11 +231,8 @@ def update_map(map_canvas):
             map_canvas.itemconfig(joueur.oval, fill=teams_color_dictionary[joueur.teamId])
             map_canvas.move(joueur.etiquette, joueur.Xmove / d, joueur.Zmove / d)
             map_canvas.itemconfig(joueur.etiquette, fill=teams_color_dictionary[joueur.teamId], text=joueur.name)
-    L = ["red", "green", "yellow", "white" ]
     for i in range(len(session.segments)):
-        #map_canvas.itemconfig(session.segments[i], fill=color_flag_dict[session.marshalZones[i].m_zone_flag])
-        map_canvas.itemconfig(session.segments[i], fill=L[i%4])
-        map_canvas.itemconfig(session.segments[0], fill="purple")
+        map_canvas.itemconfig(session.segments[i], fill=color_flag_dict[session.marshalZones[i].m_zone_flag])
 
 def draw_title(top_label1, top_label2, screen):
     top_label1.config(text=session.title_display())
