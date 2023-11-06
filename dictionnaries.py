@@ -147,7 +147,7 @@ session_dictionary = {
 }
 
 color_flag_dict = {
-    0: black, 1: green, 2: blue, 3: yellow, 4: red
+    0: white, 1: green, 2: blue, 3: yellow, 4: red
 }
 
 DRS_dict = {0: "", 1: "DRS"}
