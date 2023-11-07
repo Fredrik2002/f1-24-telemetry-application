@@ -32,4 +32,5 @@ If you don't have datas to receive, don't worry : run the *utils/sender.py* file
 * Add estimated pit exit position on the map
 * Bug : can't redirect data (Half fixed)
 * Draw players' wheel
+* Secteur 2
 

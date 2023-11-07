@@ -5,8 +5,8 @@ import json
 from parser2023 import Listener
 import math
 import time
-from ttkbootstrap import Toplevel, LEFT, Entry, IntVar, Button
-from tkinter import Message, Label, Checkbutton, Button
+from ttkbootstrap import Toplevel, LEFT, Entry, IntVar, Label
+from tkinter import Message, Checkbutton, Button
 
 LISTE_JOUEURS: list[Player] = []
 session: Session = Session()
@@ -55,7 +55,6 @@ def update_session(packet, top_frame1, top_frame2, screen, map_canvas):  # Packe
     update_frame6()
 
 def update_lap_data(packet):  # Packet 2
-    global tour_precedent, updated_standings
     mega_array = packet.m_lap_data
     for index in range(22):
         element = mega_array[index]
@@ -67,11 +66,9 @@ def update_lap_data(packet):  # Packet 2
         joueur.penalties = element.m_penalties
         joueur.currentLapTime = element.m_current_lap_time_in_ms
 
-        if element.m_sector1_time_in_ms == 0 and joueur.currentSectors[
-            0] != 0:  # On attaque un nouveau tour
+        if element.m_sector1_time_in_ms == 0 and joueur.currentSectors[0] != 0:  # On attaque un nouveau tour
             joueur.lastLapSectors = joueur.currentSectors[:]
-            joueur.lastLapSectors[2] = float(
-                '%.3f' % (joueur.lastLapTime / 1_000 - joueur.lastLapSectors[0] - joueur.lastLapSectors[1]))
+            joueur.lastLapSectors[2] = '%.3f' % (joueur.lastLapTime / 1_000 - joueur.lastLapSectors[0] - joueur.lastLapSectors[1])
 
         joueur.currentSectors = [float('%.3f' % (element.m_sector1_time_in_ms / 1000)),
                                  float('%.3f' % (element.m_sector2_time_in_ms / 1000)), 0]
@@ -239,15 +236,15 @@ def update_map(map_canvas):
         map_canvas.itemconfig(session.segments[0], fill="purple")
 
 def draw_title(top_label1, top_label2, screen):
-    top_label1.config(text=session.title_display(), bg="purple")
+    top_label1.config(text=session.title_display(), background="purple")
     top_label2.config(text=safetyCarStatusDict[session.safetyCarStatus])
     match session.safetyCarStatus:
         case 4:
-            top_label2.config(bg="red")
+            top_label2.config(background="red")
         case 0:
-            top_label2.config(bg=screen.cget("background"))
+            top_label2.config(background=screen.cget("background"))
         case _:
-            top_label2.config(bg="#FFD700")
+            top_label2.config(background="#FFD700")
 
 def init_20_players():
     for _ in range(22):
@@ -275,7 +272,7 @@ def UDP_Redirect(dictionnary_settings, listener, PORT):
             Message(win, text="The PORT must be an integer between 1000 and 65536", fg="red", font=("Arial", 16)).grid(
                 row=6, column=0)
         elif not valid_ip_address(e1.get()):
-            Label(win, text="IP Address incorrect", fg="red", font=("Arial", 16)).grid(
+            Label(win, text="IP Address incorrect", foreground="red", font=("Arial", 16)).grid(
                 row=6, column=0)
         else:
             listener.port = int(PORT[0])
