@@ -41,8 +41,7 @@ def update_session(packet, top_frame1, top_frame2, screen, map_canvas):  # Packe
     session.marshalZones = packet.m_marshal_zones  # Array[21]
     session.marshalZones[0].m_zone_start = session.marshalZones[0].m_zone_start - 1
     session.num_marshal_zones = packet.m_num_marshal_zones
-    #session.safetyCarStatus = packet.m_safety_car_status
-    session.safetyCarStatus = 2
+    session.safetyCarStatus = packet.m_safety_car_status
     session.trackLength = packet.m_track_length
     if session.currentLap > session.nbLaps:
         session.Finished = True
@@ -233,7 +232,7 @@ def update_map(map_canvas):
         map_canvas.itemconfig(session.segments[i], fill=color_flag_dict[session.marshalZones[i].m_zone_flag])
 
 def draw_title(top_label1, top_label2, screen):
-    top_label1.config(text=session.title_display(), background="purple")
+    top_label1.config(text=session.title_display())
     top_label2.config(text=safetyCarStatusDict[session.safetyCarStatus])
     match session.safetyCarStatus:
         case 4:
