@@ -24,9 +24,6 @@ class Listener:
             except ConnectionResetError: #Thrown when redirecting on a localhost port that does not read the datas
                 print(f"{self.address}:{self.redirect_port} is not ready to receive datas !")
                 return None
-            except OSError as e:
-                print(e)
-                return None
             except:
                 return None
 

@@ -1,5 +1,4 @@
-from ttkbootstrap import Window, Notebook, Frame, Canvas, Menu
-from tkinter import Label
+from ttkbootstrap import Window, Notebook, Frame, Canvas, Menu, Label
 import sys
 
 screen = Window(themename="darkly")
@@ -20,7 +19,7 @@ def init_window():
 
     screen.title("Telemetry Application")
 
-    top_frame.grid(row=0, column=0, columnspan=2, sticky="nsew")
+    top_frame.grid(row=0, column=0, columnspan=3, sticky="nsew")
     main_frame.grid(row=1, column=0, sticky="nsew")
 
     notebook = Notebook(main_frame)
@@ -48,10 +47,10 @@ def init_window():
             notebook.add(LISTE_FRAMES[5], text="Map")
 
     top_label1.place(relx=0.0, rely=0.5, anchor='w')
-    top_label2.place(relx=1, rely=0.5, anchor='e')
+    top_label2.place(relx=1, rely=0.5, anchor='e', relheight=1)
     top_frame.columnconfigure(0, weight=3)
 
-    screen.geometry("1080x700")
+    screen.geometry("1480x800")
     screen.protocol("WM_DELETE_WINDOW", close_window)
 
     menubar = Menu(screen)
@@ -83,8 +82,8 @@ if len(sys.argv)==2:
 top_frame = Frame(screen)
 main_frame = Frame(screen)
 
-top_label1 = Label(top_frame, text="Course ", bg="purple", font=("Arial", 24), padx=10)
-top_label2 = Label(top_frame, text="", bg="yellow", font=("Arial", 24), pady=100, padx=30, width=10)
+top_label1 = Label(top_frame, text="Course ", font=("Arial", 24))
+top_label2 = Label(top_frame, text="", background="yellow", font=("Arial", 24), width=10)
 
 init_window()
 init_20_players()

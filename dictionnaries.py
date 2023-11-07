@@ -15,7 +15,7 @@ black = "#000000"
 white = "#FFFFFF"
 green = "#00FF00"
 blue = "#0000FF"
-yellow = "#FFFF00"
+yellow = "#FFD700"
 red = "#FF0000"
 purple = "#880088"
 gold = "#FFD700"
@@ -33,7 +33,7 @@ tyres_dictionnary = {
 tyres_color_dictionnary = {
     0:"#FF0000",
     16: "#FF0000",
-    17: "#00FFFF",
+    17: "#FFD700",
     18: "#FFFFFF",
     7: "#00FF00",
     8: "#0000FF"
@@ -72,7 +72,7 @@ track_dictionary = { #(track name, highNumber=Small on canvas, x_offset, y_offse
     29: ("jeddah", 4, 400, 250),
     30:("Miami", 2,400,300),
     31:("Las Vegas", 4,400, 300),
-    32:("Losail", 3,400,300)
+    32:("Losail", 2.5,400,300)
 }
 
 teams_color_dictionary = {
