@@ -83,7 +83,7 @@ top_frame = Frame(screen)
 main_frame = Frame(screen)
 
 top_label1 = Label(top_frame, text="Course ", font=("Arial", 24))
-top_label2 = Label(top_frame, text="", background="yellow", font=("Arial", 24), width=10)
+top_label2 = Label(top_frame, text="", font=("Arial", 24), width=10)
 
 init_window()
 init_20_players()

@@ -50,7 +50,7 @@ def update_session(packet, top_frame1, top_frame2, screen, map_canvas):  # Packe
     for i in range(session.nb_weatherForecastSamples):
         slot = packet.m_weather_forecast_samples[i]
         session.add_slot(slot)
-    draw_title(top_frame1, top_frame2, screen)
+    update_title(top_frame1, top_frame2, screen)
     update_frame6()
 
 def update_lap_data(packet):  # Packet 2
@@ -231,17 +231,6 @@ def update_map(map_canvas):
     for i in range(len(session.segments)):
         map_canvas.itemconfig(session.segments[i], fill=color_flag_dict[session.marshalZones[i].m_zone_flag])
 
-def draw_title(top_label1, top_label2, screen):
-    top_label1.config(text=session.title_display())
-    top_label2.config(text=safetyCarStatusDict[session.safetyCarStatus])
-    match session.safetyCarStatus:
-        case 4:
-            top_label2.config(background="red")
-        case 0:
-            top_label2.config(background=screen.cget("background"))
-        case _:
-            top_label2.config(background="#FFD700")
-
 def init_20_players():
     for _ in range(22):
         LISTE_JOUEURS.append(Player())
@@ -316,6 +305,17 @@ def port_selection(dictionnary_settings, listener, PORT):
     win.bind('<KP_Enter>', lambda e: button())
     b = Button(win, text="Confirm", font=("Arial", 16), command=button)
     b.grid(row=2, column=0, pady=10)
+
+def update_title(top_label1, top_label2, screen):
+    top_label1.config(text=session.title_display())
+    top_label2.config(text=safetyCarStatusDict[session.safetyCarStatus])
+    match session.safetyCarStatus:
+        case 4:
+            top_label2.config(background="red")
+        case 0:
+            top_label2.config(background=screen.cget("background"))
+        case _:
+            top_label2.config(background="#FFD700")
 
 def update_frame(LISTE_FRAMES, LISTE_JOUEURS, session):
     sortedlist = sorted(LISTE_JOUEURS, key = lambda x : x.position if x.position != 0 else 100) 
