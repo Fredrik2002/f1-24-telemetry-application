@@ -327,11 +327,8 @@ def update_frame(LISTE_FRAMES, LISTE_JOUEURS, session):
         LISTE_FRAMES[i].sort(sortedlist, session)
 
 def update_frame6():
-    try:
-        LISTE_FRAMES[6].sort(session)
-    except Exception as e:
-        print("No weather to display")
-        print(e)
+    LISTE_FRAMES[6].sort(session)
+    
 
 
 
