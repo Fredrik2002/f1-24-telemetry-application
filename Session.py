@@ -45,6 +45,7 @@ class Session:
         self.segments = []
         self.num_marshal_zones = 0
         self.packet_received = [0]*14
+        self.anyYellow = False
 
     def add_slot(self, slot):
         self.weatherList.append(WeatherForecastSample(slot.m_time_offset, slot.m_weather, slot.m_track_temperature,
@@ -57,12 +58,8 @@ class Session:
         if self.Seance == 13:
             string = f"Time Trial : {track_dictionary[self.track][0]}"
         elif self.Seance in [10,11,12]:
-            if not self.Finished:
-                string = f"Session : {session_dictionary[self.Seance]}, Tour : {self.currentLap}/{self.nbLaps}, " \
-                         f"Air : {self.airTemperature}°C / Track : {self.trackTemperature}°C"
-            else:
-                string = f"Session : Terminée, " \
-                         f"Air : {self.airTemperature}°C / Track : {self.trackTemperature}°C"
+            string = f"Session : {session_dictionary[self.Seance]}, Tour : {self.currentLap}/{self.nbLaps}, " \
+                        f"Air : {self.airTemperature}°C / Track : {self.trackTemperature}°C"
         elif self.Seance in [5,6,7,8,9]:
             string = f" Qualif : {conversion(self.time_left, 1)}"
         else:

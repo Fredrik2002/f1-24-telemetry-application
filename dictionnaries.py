@@ -177,11 +177,11 @@ packetDictionnary = {
 }
 
 safetyCarStatusDict = {
-    0:" ",
+    0:"",
     1:"SC",
     2:"VSC",
     3:"FL",
-    4:" "
+    4:""
 }
 
 

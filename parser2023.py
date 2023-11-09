@@ -273,7 +273,7 @@ class LapData(Packet):
         ("m_sector1_time_in_ms", ctypes.c_uint16),  # Sector 1 time in milliseconds
         ("m_sector1_time_in_minutes", ctypes.c_uint8),
         ("m_sector2_time_in_ms", ctypes.c_uint16),  # Sector 2 time in milliseconds
-        ("m_sector2_time_in_ms", ctypes.c_uint8),
+        ("m_sector2_time_in_minutes", ctypes.c_uint8),
         ("m_delta_to_car_in_front_in_ms", ctypes.c_uint16),
         ("m_delta_to_race_leader_in_ms", ctypes.c_uint16),
         ("m_lap_distance", ctypes.c_float),

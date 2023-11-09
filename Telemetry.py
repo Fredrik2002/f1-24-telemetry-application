@@ -37,7 +37,7 @@ def init_window():
     map_canvas = Canvas(map)
     map_canvas.pack(expand=True, fill='both')
 
-    LISTE_FRAMES.append(Weather_Forecast_Frame(notebook, "Weather Forecast", 6, session.nb_weatherForecastSamples))
+    LISTE_FRAMES.append(Weather_Forecast_Frame(notebook, "Weather Forecast", 6, 20))
     LISTE_FRAMES.append(Packet_Reception_Frame(notebook, "Packet Reception", 7))
 
     for i in range(8):

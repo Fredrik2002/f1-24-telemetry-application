@@ -10,7 +10,7 @@ socket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 socket.bind(('', PORT))
 socket.setblocking(False)
 
-PATH = "E:/Data_samples/datas_Kilcri_Las_Vegas.txt"
+PATH = "Brazil_race_8-11-2.txt"
 
 if os.path.isfile(PATH):
     print(f"WARNING : The file {PATH} already exists, it will be overwritten if you continue.")

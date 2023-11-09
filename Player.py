@@ -62,7 +62,7 @@ class Player:
                     f" num = {self.numero} Last lap : {conversion(self.lastLapTime, 2)}"
                     f" Fastest lap : {conversion(self.bestLapTime, 2)} {pit_dictionary[self.pit]}")
             else: #Course
-                return f"P{self.position} {self.name} {self.tyresAgeLaps} tours " \
+                return f"P{self.position}, {self.name} {self.tyresAgeLaps} tours " \
                        f"Gap :{self.gapTo(liste_joueurs[0])}s {self.ERS_pourcentage}% {ERS_dictionary[self.ERS_mode]} " \
                        f"Warnings = {self.warnings} num = {self.numero} {pit_dictionary[self.pit]} {DRS_dict[self.drs]} "
 
@@ -84,8 +84,11 @@ class Player:
                 f"FR : {self.tyres_temp_surface[3]}|{self.tyres_temp_inner[3]}, {pit_dictionary[self.pit]} ")
 
         elif buttonId == 3:  # Laps
-            return f"P{self.position}, {self.name} Last lap : {conversion(self.lastLapTime, 2)} {self.return_list_sectors()}" \
-                   f"  Fastest lap : {conversion(self.bestLapTime, 2)} {self.bestLapSectors} {pit_dictionary[self.pit]}"
+            return f"P{self.position}, {self.name} "+ \
+            f"Current lap : {conversion(self.currentLapTime, 2)} [{', '.join('%.3f'%truc for truc in self.currentSectors)}] " + \
+            f"Last lap : {conversion(self.lastLapTime, 2)} [{', '.join('%.3f'%truc for truc in self.lastLapSectors)}]  " + \
+            f"Fastest lap : {conversion(self.bestLapTime, 2)} [{', '.join('%.3f'%truc for truc in self.bestLapSectors)}] "  + \
+            f"{pit_dictionary[self.pit]}"
 
         elif buttonId == 4:
             return f"P{self.position}, {self.name} ERS = {self.ERS_pourcentage}% | {ERS_dictionary[self.ERS_mode]}  " \
@@ -105,14 +108,4 @@ class Player:
             else:
                 return "green" if self.is_not_on_lap() else "red"
 
-    def get_team(self):
-        return teams_name_dictionary[self.teamId]
 
-    def get_number(self):
-        return self.numero
-
-    def get_name(self):
-        return self.name
-
-    def return_list_sectors(self):
-        return self.currentSectors
