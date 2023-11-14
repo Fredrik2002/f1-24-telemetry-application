@@ -142,7 +142,7 @@ session_dictionary = {
     6: "Q2",
     7: "Q3",
     8: "Short qualy",
-    10: "Course"
+    10: "Race"
 
 }
 

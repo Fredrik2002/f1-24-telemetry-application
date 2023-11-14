@@ -198,13 +198,14 @@ def create_map(map_canvas):
                     cmi +=1
     session.segments.insert(0, map_canvas.create_line(L1+L0, width=3))
     for joueur in LISTE_JOUEURS:
-        joueur.oval = map_canvas.create_oval(joueur.worldPositionX / d + x_const - WIDTH_POINTS,
-                                             joueur.worldPositionZ / d + z_const - WIDTH_POINTS,
-                                             joueur.worldPositionX / d + x_const + WIDTH_POINTS,
-                                             joueur.worldPositionZ / d + z_const + WIDTH_POINTS, outline="")
-        joueur.etiquette = map_canvas.create_text(joueur.worldPositionX / d + x_const + 25,
-                                                  joueur.worldPositionZ / d + z_const - 25,
-                                                  text=joueur.name, font=("Cousine", 13))
+        if joueur.position!=100:
+            joueur.oval = map_canvas.create_oval(joueur.worldPositionX / d + x_const - WIDTH_POINTS,
+                                                joueur.worldPositionZ / d + z_const - WIDTH_POINTS,
+                                                joueur.worldPositionX / d + x_const + WIDTH_POINTS,
+                                                joueur.worldPositionZ / d + z_const + WIDTH_POINTS, outline="")
+            joueur.etiquette = map_canvas.create_text(joueur.worldPositionX / d + x_const + 25,
+                                                    joueur.worldPositionZ / d + z_const - 25,
+                                                    text=joueur.name, font=("Cousine", 13))
 
 def delete_map(map_canvas):
     for element in session.segments:

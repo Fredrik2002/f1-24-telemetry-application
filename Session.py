@@ -12,11 +12,11 @@ class WeatherForecastSample:
 
     def __repr__(self):
         return f"{self.time}m : {weather_dictionary[self.weather]}, Track : {self.trackTemp}°C, " \
-               f"Air : {self.airTemp}°C, Humidité : {self.rainPercentage}% "
+               f"Air : {self.airTemp}°C, Humidity : {self.rainPercentage}% "
 
     def __str__(self):
         return f"{self.time}m : {weather_dictionary[self.weather]}, Track : {self.trackTemp}°C, " \
-               f"Air : {self.airTemp}°C, Humidité : {self.rainPercentage}% "
+               f"Air : {self.airTemp}°C, Humidity : {self.rainPercentage}% "
 
 class Session:
     def __init__(self):
@@ -58,10 +58,10 @@ class Session:
         if self.Seance == 13:
             string = f"Time Trial : {track_dictionary[self.track][0]}"
         elif self.Seance in [10,11,12]:
-            string = f"Session : {session_dictionary[self.Seance]}, Tour : {self.currentLap}/{self.nbLaps}, " \
+            string = f"Session : {session_dictionary[self.Seance]}, Lap : {self.currentLap}/{self.nbLaps}, " \
                         f"Air : {self.airTemperature}°C / Track : {self.trackTemperature}°C"
         elif self.Seance in [5,6,7,8,9]:
-            string = f" Qualif : {conversion(self.time_left, 1)}"
+            string = f" Qualy : {conversion(self.time_left, 1)}"
         else:
             string = f" FP : {conversion(self.time_left, 1)}"
         return string

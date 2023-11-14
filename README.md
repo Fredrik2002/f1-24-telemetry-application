@@ -3,6 +3,14 @@
 The goal of this project is to summarize the most crucial informations in the most handy way possible. \
 The window was created with tkinter & ttkbootstrap
 
+## Features
+* Mini-Map & Mini sectors coloured by the flag status in that section
+* All datas regarding ERS, Fuel, Lap Times, Damages, Temperatures, Tyres and more
+* Counts warnings taken by each player
+* Record time needed for each player to reach 200km/h at the start
+* Possibility to redirect datas to another IP address (which can be yourself, if you want 2 different applications to use the same datas)
+* Possibility to check how many packets you receive per second
+
 ## Usage
 1. Make sure all the packages required are installed. They are :
 - tkinter

@@ -22,7 +22,6 @@ class Listener:
                 if self.redirect == 1:
                     self.socket.sendto(packet, (self.address, self.redirect_port))
             except ConnectionResetError: #Thrown when redirecting on a localhost port that does not read the datas
-                print(f"{self.address}:{self.redirect_port} is not ready to receive datas !")
                 return None
             except:
                 return None
