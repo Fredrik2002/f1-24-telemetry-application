@@ -41,7 +41,7 @@ tyres_color_dictionnary = {
 
 track_dictionary = { #(track name, highNumber=Small on canvas, x_offset, y_offset)
     0: ("melbourne", 3.5, 300, 300),
-    1: ("paul_ricard", 2.5, 400, 300),
+    1: ("paul_ricard", 2.5, 500, 300),
     2: ("shanghai", 2, 300, 300),
     3: ("sakhir", 2, 300, 300),
     4: ("catalunya", 2.5, 400, 300),
@@ -52,7 +52,7 @@ track_dictionary = { #(track name, highNumber=Small on canvas, x_offset, y_offse
     9: ("hungaroring", 2.5, 400, 300),
     10: ("spa", 3.5, 400, 300),
     11: ("monza", 4, 400, 300),
-    12: ("singapore", 2, 300, 300),
+    12: ("singapore", 2, 400, 300),
     13: ("suzuka", 2.5, 500, 300),
     14: ("abu_dhabi", 2, 500, 250),
     15: ("texas", 2, 400, 50),

@@ -52,7 +52,10 @@ class Player:
         return str(self.position)
 
     def gapTo(self, driver_in_front):
-        return f'{self.minisectors[self.lapDistance] - driver_in_front.minisectors[self.lapDistance]:.3f}'
+        if self.minisectors[self.lapDistance] >= driver_in_front.minisectors[self.lapDistance]:
+            return f'{self.minisectors[self.lapDistance] - driver_in_front.minisectors[self.lapDistance]:.3f}'
+        else:
+            return "-"
 
     def printing(self, buttonId, liste_joueurs, session):
         if buttonId == 0:  # Menu principal
