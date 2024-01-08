@@ -3,6 +3,14 @@
 The goal of this project is to summarize the most crucial informations in the most handy way possible. \
 The window was created with tkinter & ttkbootstrap
 
+![Telemetry map](https://github.com/Fredrik2002/f1-23-telemetry-application/assets/86866135/7b1ce85e-f57d-4861-b7f5-10bee4ad9b11)
+
+![Telemetry 2](https://github.com/Fredrik2002/f1-23-telemetry-application/assets/86866135/3653b8ae-4604-402a-886b-45e6cf7147d5)
+
+![Telemetry 3](https://github.com/Fredrik2002/f1-23-telemetry-application/assets/86866135/ff73f7f2-b7c2-48e1-b547-4eebc37fae1c)
+
+![Telemetry 4](https://github.com/Fredrik2002/f1-23-telemetry-application/assets/86866135/080b3804-67bd-4c6b-bc9c-970d796546a3)
+
 ## Features
 * Mini-Map & Mini sectors coloured by the flag status in that section
 * All datas regarding ERS, Fuel, Lap Times, Damages, Temperatures, Tyres and more
