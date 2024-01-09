@@ -19,6 +19,7 @@ yellow = "#FFD700"
 red = "#FF0000"
 purple = "#880088"
 gold = "#FFD700"
+grey = "#4B4B4B"
 
 
 tyres_dictionnary = {

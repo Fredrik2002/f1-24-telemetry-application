@@ -47,6 +47,7 @@ class Player:
         self.Zmove = 0
         self.etiquette = ""
         self.aiControlled = -1
+        self.hasRetired = False
 
     def __str__(self):
         return str(self.position)

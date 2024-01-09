@@ -91,25 +91,29 @@ def warnings(packet):  # Packet 3
     if packet.m_event_string_code[0] == 80:  # PENA
         T = packet.m_event_details.m_penalty
         joueur = LISTE_JOUEURS[T.m_vehicle_idx]
-        try:
-            if T.m_infringement_type in [7, 27]:
-                print(f"Track limit {joueur.name} "
-                      f"type {T.m_infringement_type} "
-                      f"tour {session.currentLap}")
-                if session.Seance == 10:
-                    joueur.warnings += 1
-        except IndexError:
-            print("Erreur pour l'index", T.m_vehicle_idx)
-    elif packet.m_event_string_code[3] == 71 and packet.m_event_details.m_start_lights.m_num_lights >= 2:
+        if T.m_infringement_type in [7, 27]:
+            print(f"Track limit {joueur.name} "
+                    f"type {T.m_infringement_type} "
+                    f"tour {session.currentLap}")
+            if session.Seance == 10:
+                joueur.warnings += 1
+    elif packet.m_event_string_code[3] == 71 and packet.m_event_details.m_start_lights.m_num_lights >= 2: # Starts lights : STLG
         session.formationLapDone = True
         print(f"{packet.m_event_details.m_start_lights.m_num_lights} red lights ")
-    elif packet.m_event_string_code[0] == 76 and session.formationLapDone:
+    elif packet.m_event_string_code[0] == 76 and session.formationLapDone: #Lights out : LGOT
         print("Lights out !")
         session.formationLapDone = False
         session.startTime = time.time()
         for joueur in LISTE_JOUEURS:
             joueur.S200_reached = False
             joueur.warnings = 0
+            joueur.lastLapSectors = [0] * 3
+            joueur.bestLapSectors = [0] * 3
+            joueur.lastLapTime: float = 0
+            joueur.currentSectors = [0] * 3
+            joueur.bestLapTime = 0
+    elif packet.m_event_string_code[2] == 82:
+        LISTE_JOUEURS[packet.m_event_details.m_vehicle_idx].hasRetired = True
 
 def update_participants(packet):  # Packet 4
     for index in range(22):
