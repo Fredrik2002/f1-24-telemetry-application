@@ -46,6 +46,5 @@ If you don't have datas to receive, don't worry : run the *utils/sender.py* file
 ## To do list
 * Check glitch in CLM where a car gets in the middle (Removed AFK cars ?)
 * Add estimated pit exit position on the map
-* Bug : can't redirect data (Half fixed)
-* Draw players' wheel
+* Problem with weather Forecast Sample in 100% (Too many samples ?)
 

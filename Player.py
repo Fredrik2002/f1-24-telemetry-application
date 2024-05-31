@@ -48,13 +48,14 @@ class Player:
         self.etiquette = ""
         self.aiControlled = -1
         self.hasRetired = False
+        self.spped_trap = 0
 
     def __str__(self):
         return str(self.position)
 
     def gapTo(self, driver_in_front):
         if self.minisectors[self.lapDistance] >= driver_in_front.minisectors[self.lapDistance]:
-            return f'{self.minisectors[self.lapDistance] - driver_in_front.minisectors[self.lapDistance]:.3f}'
+            return f'{self.minisectors[self.lapDistance] - driver_in_front.minisectors[self.lapDistance]:.3f}s'
         else:
             return "-"
 
@@ -67,7 +68,7 @@ class Player:
                     f" Fastest lap : {conversion(self.bestLapTime, 2)} {pit_dictionary[self.pit]}")
             else: #Course
                 return f"P{self.position}, {self.name} {self.tyresAgeLaps} tours " \
-                       f"Gap :{self.gapTo(liste_joueurs[0])}s {self.ERS_pourcentage}% {ERS_dictionary[self.ERS_mode]} " \
+                       f"Gap :{self.gapTo(liste_joueurs[0])} {self.ERS_pourcentage}% {ERS_dictionary[self.ERS_mode]} " \
                        f"Warnings = {self.warnings} num = {self.numero} {pit_dictionary[self.pit]} {DRS_dict[self.drs]} "
 
         elif buttonId == 1:  # Dégâts
@@ -96,7 +97,7 @@ class Player:
 
         elif buttonId == 4:
             return f"P{self.position}, {self.name} ERS = {self.ERS_pourcentage}% | {ERS_dictionary[self.ERS_mode]}  " \
-                   f"Fuel = {round(self.fuelRemainingLaps, 2)} tours | {fuel_dict[self.fuelMix]}, {self.penalties}s"
+                   f"Fuel = {round(self.fuelRemainingLaps, 2)} tours | {self.penalties}s | {self.speed_trap}km/h"
 
     def is_not_on_lap(self):
         return self.currentLapTime == 0 or (self.yourTelemetry==1 and self.ERS_mode == 0) or \

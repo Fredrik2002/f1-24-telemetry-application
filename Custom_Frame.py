@@ -61,11 +61,13 @@ class Weather_Forecast_Frame(Custom_Frame):
         super().__init__(parent, name, id, n_lines)
 
     def sort(self, session : Session):
-        for i in range(session.nb_weatherForecastSamples):
-            frame, label, j = self.liste_frame[i]
-            label.config(text=session.weatherList[i])
-        for i in range(session.nb_weatherForecastSamples, 20):
-            frame, label, j = self.liste_frame[i]
-            label.config(text="")
+        try:
+            for i in range(session.nb_weatherForecastSamples):
+                frame, label, j = self.liste_frame[i]
+                label.config(text=session.weatherList[i])
+            for i in range(session.nb_weatherForecastSamples, 20):
+                frame, label, j = self.liste_frame[i]
+                label.config(text="")
+        except: pass
         
 

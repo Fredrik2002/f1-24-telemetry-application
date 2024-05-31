@@ -15,4 +15,4 @@ i=0
 while True:
     i = (i + 1) % len(b)
     my_socket.sendto(b[i], ("127.0.0.1", PORT))
-    time.sleep(0.005)
+    time.sleep(0.01)

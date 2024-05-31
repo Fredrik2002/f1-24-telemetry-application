@@ -15,6 +15,11 @@ class Listener:
         self.redirect = redirect
         self.redirect_port = redirect_port
 
+    def reset(self):
+        self.socket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+        self.socket.bind(('', self.port))
+        self.socket.setblocking(0)
+
     def get(self, packet=None):
         if packet is None:
             try:

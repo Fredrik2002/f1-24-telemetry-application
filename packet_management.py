@@ -61,6 +61,8 @@ def update_lap_data(packet):  # Packet 2
         joueur.pit = element.m_pit_status
         joueur.driverStatus = element.m_driver_status
         joueur.penalties = element.m_penalties
+        joueur.warnings = element.m_corner_cutting_warnings
+        joueur.speed_trap = element.m_speedTrapFastestSpeed
         joueur.currentLapTime = element.m_current_lap_time_in_ms
 
         if element.m_sector1_time_in_ms == 0 and joueur.currentSectors[0] != 0:  # On attaque un nouveau tour
@@ -88,16 +90,7 @@ def update_lap_data(packet):  # Packet 2
             joueur.current_mini_sect = joueur.lapDistance
 
 def warnings(packet):  # Packet 3
-    if packet.m_event_string_code[0] == 80:  # PENA
-        T = packet.m_event_details.m_penalty
-        joueur = LISTE_JOUEURS[T.m_vehicle_idx]
-        if T.m_infringement_type in [7, 27]:
-            print(f"Track limit {joueur.name} "
-                    f"type {T.m_infringement_type} "
-                    f"tour {session.currentLap}")
-            if session.Seance == 10:
-                joueur.warnings += 1
-    elif packet.m_event_string_code[3] == 71 and packet.m_event_details.m_start_lights.m_num_lights >= 2: # Starts lights : STLG
+    if packet.m_event_string_code[3] == 71 and packet.m_event_details.m_start_lights.m_num_lights >= 2: # Starts lights : STLG
         session.formationLapDone = True
         print(f"{packet.m_event_details.m_start_lights.m_num_lights} red lights ")
     elif packet.m_event_string_code[0] == 76 and session.formationLapDone: #Lights out : LGOT
@@ -210,6 +203,8 @@ def create_map(map_canvas):
             joueur.etiquette = map_canvas.create_text(joueur.worldPositionX / d + x_const + 25,
                                                     joueur.worldPositionZ / d + z_const - 25,
                                                     text=joueur.name, font=("Cousine", 13))
+            map_canvas.moveto(joueur.oval, joueur.worldPositionX / d + x_const - WIDTH_POINTS,
+                              joueur.worldPositionZ / d + z_const - WIDTH_POINTS)
 
 def delete_map(map_canvas):
     for element in session.segments:
@@ -221,9 +216,6 @@ def delete_map(map_canvas):
 def update_map(map_canvas):
     _, d, x, z = track_dictionary[session.track]
     for joueur in LISTE_JOUEURS:
-        if joueur.etiquette == "":
-            joueur.etiquette = map_canvas.create_text(joueur.worldPositionX / d + x, joueur.worldPositionZ / d + z,
-                                                      text=joueur.name)
         if joueur.position != 0:
             map_canvas.move(joueur.oval, joueur.Xmove / d, joueur.Zmove / d)
             map_canvas.itemconfig(joueur.oval, fill=teams_color_dictionary[joueur.teamId])
@@ -297,6 +289,7 @@ def port_selection(dictionnary_settings, listener, PORT):
         else:
             listener.socket.close()
             listener.port = int(PORT[0])
+            listener.reset()
             Label(win, text="").grid(row=3, column=0)
             dictionnary_settings["port"] = str(PORT[0])
             with open("settings.txt", "w") as f:
