@@ -55,9 +55,9 @@ class Session:
         self.weatherList = []
 
     def title_display(self):
-        if self.Seance == 13:
+        if self.Seance == 18:
             string = f"Time Trial : {track_dictionary[self.track][0]}"
-        elif self.Seance in [10,11,12]:
+        elif self.Seance in [15,16,17]:
             string = f"Session : {session_dictionary[self.Seance]}, Lap : {self.currentLap}/{self.nbLaps}, " \
                         f"Air : {self.airTemperature}°C / Track : {self.trackTemperature}°C"
         elif self.Seance in [5,6,7,8,9]:

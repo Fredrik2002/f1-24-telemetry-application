@@ -17,15 +17,16 @@ liste_button: list = ["Main Menu", "Damage", "Temperatures", "Laps", "Map", "ERS
                               "Packet Reception"]
 
 def update_motion(packet, map_canvas, *args):  # Packet 0
-    if not created_map:
-        create_map(map_canvas)
     for i in range(22):
         if LISTE_JOUEURS[i].worldPositionX != 0:
             LISTE_JOUEURS[i].Xmove = packet.m_car_motion_data[i].m_world_position_x - LISTE_JOUEURS[i].worldPositionX
             LISTE_JOUEURS[i].Zmove = packet.m_car_motion_data[i].m_world_position_z - LISTE_JOUEURS[i].worldPositionZ
         LISTE_JOUEURS[i].worldPositionX = packet.m_car_motion_data[i].m_world_position_x
         LISTE_JOUEURS[i].worldPositionZ = packet.m_car_motion_data[i].m_world_position_z
-    update_map(map_canvas)
+    try:
+        update_map(map_canvas)
+    except Exception:
+        create_map(map_canvas)
 
 def update_session(packet, top_frame1, top_frame2, screen, map_canvas):  # Packet 1
     global created_map
@@ -62,7 +63,7 @@ def update_lap_data(packet):  # Packet 2
         joueur.driverStatus = element.m_driver_status
         joueur.penalties = element.m_penalties
         joueur.warnings = element.m_corner_cutting_warnings
-        joueur.speed_trap = element.m_speedTrapFastestSpeed
+        joueur.speed_trap = round(element.m_speedTrapFastestSpeed, 2)
         joueur.currentLapTime = element.m_current_lap_time_in_ms
 
         if element.m_sector1_time_in_ms == 0 and joueur.currentSectors[0] != 0:  # On attaque un nouveau tour
@@ -116,7 +117,10 @@ def update_participants(packet):  # Packet 4
         joueur.teamId = element.m_team_id
         joueur.aiControlled = element.m_ai_controlled
         joueur.yourTelemetry = element.m_your_telemetry
-        joueur.name = element.m_name.decode("utf-8")
+        try:
+            joueur.name = element.m_name.decode("utf-8")
+        except:
+            joueur.name = element.m_name
         session.nb_players = packet.m_num_active_cars
         if joueur.name in ['Player', 'Joueur']:
             joueur.name = teams_name_dictionary[joueur.teamId] + "#" + str(joueur.numero)
@@ -170,16 +174,12 @@ def nothing(packet):# Packet 8, 9, 11, 12, 13
     pass
 
 def create_map(map_canvas):
-    global created_map
-    if session.trackLength==0:
-        return
     cmi = 1
     L0, L1 = [], []
     L = []
     name, d, x_const, z_const = track_dictionary[session.track]
     with open(f"tracks/{name}_2020_racingline.txt", "r") as file:
         for index, line in enumerate(file):
-            created_map = True
             if index not in [0, 1]:
                 dist, z, x, y, _, _ = line.strip().split(",")
                 if cmi == 1:

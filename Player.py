@@ -48,7 +48,7 @@ class Player:
         self.etiquette = ""
         self.aiControlled = -1
         self.hasRetired = False
-        self.spped_trap = 0
+        self.speed_trap = 0
 
     def __str__(self):
         return str(self.position)

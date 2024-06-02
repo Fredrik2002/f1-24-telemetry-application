@@ -7,7 +7,7 @@ from packet_management import *
 import json
 import time
 from dictionnaries import *
-from parser2023 import Listener
+from parser2024 import Listener
 from Custom_Frame import Players_Frame, Packet_Reception_Frame, Weather_Forecast_Frame
 
 
@@ -70,7 +70,7 @@ indice 7,27,28,29
 '''
 
 
-packet_received = [0]*14
+packet_received = [0]*15
 last_update = time.time()
 
 with open("settings.txt", "r") as f:
@@ -109,7 +109,8 @@ function_hashmap = { #PacketId : (fonction, arguments)
     10: (update_car_damage, ()),
     11: (nothing, ()),
     12: (nothing, ()),
-    13: (nothing, ())
+    13: (nothing, ()),
+    14: (nothing, ())
 
 }
 
@@ -124,7 +125,7 @@ while running:
         last_update = time.time()
         LISTE_FRAMES[7].sort(packet_received) #Packet Received tab
         session.packet_received = packet_received[:]
-        packet_received = [0]*14
+        packet_received = [0]*15
     screen.update()
     screen.update_idletasks()
     

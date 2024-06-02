@@ -2,15 +2,16 @@ import socket
 import pickle
 import threading
 import os
+import datetime
 
-PORT = 20775
+PORT = 20776
 string = ""
 
 socket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 socket.bind(('', PORT))
 socket.setblocking(False)
 
-PATH = "Brazil_race_8-11-2.txt"
+PATH = "datas2.txt"
 
 if os.path.isfile(PATH):
     print(f"WARNING : The file {PATH} already exists, it will be overwritten if you continue.")
