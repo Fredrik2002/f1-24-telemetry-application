@@ -7,6 +7,7 @@ import math
 import time
 from ttkbootstrap import Toplevel, LEFT, Entry, IntVar, Label
 from tkinter import Message, Checkbutton, Button
+from Custom_Frame import Custom_Frame
 
 LISTE_JOUEURS: list[Player] = []
 session: Session = Session()
@@ -17,7 +18,7 @@ liste_button: list = ["Main Menu", "Damage", "Temperatures", "Laps", "Map", "ERS
                               "Packet Reception"]
 
 def update_motion(packet, map_canvas, *args):  # Packet 0
-    for i in range(22):
+    for i in range(session.nb_players):
         if LISTE_JOUEURS[i].worldPositionX != 0:
             LISTE_JOUEURS[i].Xmove = packet.m_car_motion_data[i].m_world_position_x - LISTE_JOUEURS[i].worldPositionX
             LISTE_JOUEURS[i].Zmove = packet.m_car_motion_data[i].m_world_position_z - LISTE_JOUEURS[i].worldPositionZ
@@ -25,8 +26,11 @@ def update_motion(packet, map_canvas, *args):  # Packet 0
         LISTE_JOUEURS[i].worldPositionZ = packet.m_car_motion_data[i].m_world_position_z
     try:
         update_map(map_canvas)
-    except Exception:
-        create_map(map_canvas)
+    except Exception as e:
+        try:
+            create_map(map_canvas)
+        except Exception as e :
+            pass
 
 def update_session(packet, top_frame1, top_frame2, screen, map_canvas):  # Packet 1
     global created_map
@@ -45,7 +49,9 @@ def update_session(packet, top_frame1, top_frame2, screen, map_canvas):  # Packe
     session.safetyCarStatus = packet.m_safety_car_status
     session.trackLength = packet.m_track_length
     session.clear_slot()
-    session.nb_weatherForecastSamples = packet.m_num_weather_forecast_samples
+    if packet.m_num_weather_forecast_samples != session.nb_weatherForecastSamples:
+        session.nb_weatherForecastSamples = packet.m_num_weather_forecast_samples
+        #Reconstruire le tableau 
     for i in range(session.nb_weatherForecastSamples):
         slot = packet.m_weather_forecast_samples[i]
         session.add_slot(slot)
@@ -57,7 +63,7 @@ def update_lap_data(packet):  # Packet 2
     for index in range(22):
         element = mega_array[index]
         joueur = LISTE_JOUEURS[index]
-        joueur.position = element.m_car_position if element.m_car_position !=0 else 100
+        joueur.position = element.m_car_position
         joueur.lastLapTime = round(element.m_last_lap_time_in_ms, 3)
         joueur.pit = element.m_pit_status
         joueur.driverStatus = element.m_driver_status
@@ -65,6 +71,7 @@ def update_lap_data(packet):  # Packet 2
         joueur.warnings = element.m_corner_cutting_warnings
         joueur.speed_trap = round(element.m_speedTrapFastestSpeed, 2)
         joueur.currentLapTime = element.m_current_lap_time_in_ms
+        joueur.delta_to_leader=element.m_deltaToCarInFrontMSPart
 
         if element.m_sector1_time_in_ms == 0 and joueur.currentSectors[0] != 0:  # On attaque un nouveau tour
             joueur.lastLapSectors = joueur.currentSectors[:]
@@ -80,15 +87,6 @@ def update_lap_data(packet):  # Packet 2
         if element.m_car_position == 1:
             session.currentLap = mega_array[index].m_current_lap_num
             session.tour_precedent = session.currentLap - 1
-        try:
-            joueur.lapDistance = math.floor(
-                element.m_lap_distance / session.trackLength * len(joueur.minisectors)) % len(joueur.minisectors)
-            # Si element.lapDistance = trackLength, joueur.lapDistance = 100
-        except ZeroDivisionError:
-            return
-        if joueur.current_mini_sect != joueur.lapDistance:
-            joueur.minisectors[joueur.lapDistance] = time.time()
-            joueur.current_mini_sect = joueur.lapDistance
 
 def warnings(packet):  # Packet 3
     if packet.m_event_string_code[3] == 71 and packet.m_event_details.m_start_lights.m_num_lights >= 2: # Starts lights : STLG
@@ -311,13 +309,12 @@ def update_title(top_label1, top_label2, screen):
     else:
         top_label2.config(background=screen.cget("background"))
 
-def update_frame(LISTE_FRAMES, LISTE_JOUEURS, session):
-    sortedlist = sorted(LISTE_JOUEURS, key = lambda x : x.position if x.position != 0 else 100) 
+def update_frame(LISTE_FRAMES : list[Custom_Frame], LISTE_JOUEURS, session):
     for i in range(5):
-        LISTE_FRAMES[i].sort(sortedlist, session)
+        LISTE_FRAMES[i].update(LISTE_JOUEURS, session)
 
 def update_frame6():
-    LISTE_FRAMES[6].sort(session)
+    LISTE_FRAMES[6].update(session)
     
 
 

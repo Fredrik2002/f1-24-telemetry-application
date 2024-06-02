@@ -35,29 +35,21 @@ class Player:
         self.floorDamage = 0
         self.diffuserDamage = 0
         self.sidepodDamage = 0
-        self.minisectors: list[float] = [0] * 100
-        self.lapDistance: int = 0
-        self.current_mini_sect: int = -1
         self.name = " "
         self.S200_reached = True
         self.currentLapTime = 0
         self.setup_array = []
-        self.oval = 0
+        self.oval = None
         self.Xmove = 0
         self.Zmove = 0
         self.etiquette = ""
         self.aiControlled = -1
         self.hasRetired = False
         self.speed_trap = 0
+        self.delta_to_leader = 0
 
     def __str__(self):
-        return str(self.position)
-
-    def gapTo(self, driver_in_front):
-        if self.minisectors[self.lapDistance] >= driver_in_front.minisectors[self.lapDistance]:
-            return f'{self.minisectors[self.lapDistance] - driver_in_front.minisectors[self.lapDistance]:.3f}s'
-        else:
-            return "-"
+        return self.name + str(self.position)
 
     def printing(self, buttonId, liste_joueurs, session):
         if buttonId == 0:  # Menu principal
@@ -68,7 +60,7 @@ class Player:
                     f" Fastest lap : {conversion(self.bestLapTime, 2)} {pit_dictionary[self.pit]}")
             else: #Course
                 return f"P{self.position}, {self.name} {self.tyresAgeLaps} tours " \
-                       f"Gap :{self.gapTo(liste_joueurs[0])} {self.ERS_pourcentage}% {ERS_dictionary[self.ERS_mode]} " \
+                       f"Gap :{'%.3f'%(self.delta_to_leader/1000)} {self.ERS_pourcentage}% {ERS_dictionary[self.ERS_mode]} " \
                        f"Warnings = {self.warnings} num = {self.numero} {pit_dictionary[self.pit]} {DRS_dict[self.drs]} "
 
         elif buttonId == 1:  # Dégâts

@@ -123,7 +123,7 @@ while running:
         func(packet, *args)
     if time.time() > last_update+1:
         last_update = time.time()
-        LISTE_FRAMES[7].sort(packet_received) #Packet Received tab
+        LISTE_FRAMES[7].update(packet_received) #Packet Received tab
         session.packet_received = packet_received[:]
         packet_received = [0]*15
     screen.update()

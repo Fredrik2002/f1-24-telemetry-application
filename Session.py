@@ -29,7 +29,7 @@ class Session:
         self.Finished = False
         self.time_left = 0
         self.legende = ""
-        self.track = 0
+        self.track = -1
         self.marshalZones = []
         self.idxBestLapTime = -1
         self.bestLapTime = 5000

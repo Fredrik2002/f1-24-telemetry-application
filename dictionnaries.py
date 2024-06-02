@@ -44,7 +44,7 @@ track_dictionary = { #(track name, highNumber=Small on canvas, x_offset, y_offse
     0: ("melbourne", 3.5, 300, 300),
     1: ("paul_ricard", 2.5, 500, 300),
     2: ("shanghai", 2, 300, 300),
-    3: ("sakhir", 2, 400, 350),
+    3: ("sakhir", 2, 600, 350),
     4: ("catalunya", 2.5, 400, 300),
     5: ("monaco", 2, 300, 300),
     6: ("montreal", 3, 300, 100),

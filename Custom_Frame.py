@@ -17,7 +17,7 @@ class Custom_Frame(Frame): # Frame Tableau
             frame.grid(row=i, column=0, sticky="nsew", pady=2, padx=5)
             label = Label(frame, text="Driver"+str(i), font="Helvetica 12")
             label.pack(side='left')
-            self.liste_frame.append((frame, label, i))
+            self.liste_frame.append((frame, label))
         self.pack(expand=True, fill="both")
 
 
@@ -30,29 +30,27 @@ class Players_Frame(Custom_Frame):
             label.pack(side='left')
             self.liste_frame[i][1].pack_forget()
             self.liste_frame[i][1].pack(side='left')
-            self.label_tyres.append((label, i))
+            self.label_tyres.append(label)
+        # Insère le label pour les pneus
 
-    def sort(self, LISTE_JOUEURS:list[Player], session):
-        self.liste_frame.sort(key=lambda e : LISTE_JOUEURS[e[2]].position)
-        self.label_tyres.sort(key=lambda e : LISTE_JOUEURS[e[1]].position)
-        for i in range(self.n_lines):
-            frame, label, j = self.liste_frame[i]
-            joueur = LISTE_JOUEURS[j]
-            frame.grid(row=i, column=0)
+    def update(self, LISTE_JOUEURS:list[Player], session):
+        for i in range(session.nb_players):
+            joueur = LISTE_JOUEURS[i]
+            frame, label = self.liste_frame[joueur.position-1]
             if joueur.position != 100:
-                label.config(text=joueur.printing(self.id, LISTE_JOUEURS, session.Seance), foreground=teams_color_dictionary[joueur.teamId] if not joueur.hasRetired else grey)
-                self.label_tyres[i][0].config(text=tyres_dictionnary[joueur.tyres], foreground=tyres_color_dictionnary[joueur.tyres])
+                label.config(text=joueur.printing(self.id, LISTE_JOUEURS, session.Seance))
+                self.label_tyres[joueur.position-1].config(text=tyres_dictionnary[joueur.tyres], foreground=tyres_color_dictionnary[joueur.tyres])
             else:
                 label.config(text="")
-                self.label_tyres[i][0].config(text="")
+                self.label_tyres[joueur.position-1].config(text="")
 
 class Packet_Reception_Frame(Custom_Frame):
     def __init__(self, parent, name, id):
-        super().__init__(parent, name, id, 14)
+        super().__init__(parent, name, id, 15)
 
-    def sort(self, packet_received):
-        for i in range(14):
-            frame, label, j = self.liste_frame[i]
+    def update(self, packet_received):
+        for i in range(self.n_lines):
+            frame, label = self.liste_frame[i]
             label.config(text=f"{packetDictionnary[i]} : {packet_received[i]}/s")
 
 
@@ -60,13 +58,13 @@ class Weather_Forecast_Frame(Custom_Frame):
     def __init__(self, parent, name, id, n_lines):
         super().__init__(parent, name, id, n_lines)
 
-    def sort(self, session : Session):
+    def update(self, session : Session):
         try:
             for i in range(session.nb_weatherForecastSamples):
-                frame, label, j = self.liste_frame[i]
+                frame, label = self.liste_frame[i]
                 label.config(text=session.weatherList[i])
             for i in range(session.nb_weatherForecastSamples, 20):
-                frame, label, j = self.liste_frame[i]
+                frame, label = self.liste_frame[i]
                 label.config(text="")
         except: pass
         
