@@ -72,6 +72,7 @@ def update_lap_data(packet):  # Packet 2
         joueur.speed_trap = round(element.m_speedTrapFastestSpeed, 2)
         joueur.currentLapTime = element.m_current_lap_time_in_ms
         joueur.delta_to_leader=element.m_deltaToCarInFrontMSPart
+        joueur.currentLapInvalid = element.m_current_lap_invalid
 
         if element.m_sector1_time_in_ms == 0 and joueur.currentSectors[0] != 0:  # On attaque un nouveau tour
             joueur.lastLapSectors = joueur.currentSectors[:]

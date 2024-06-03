@@ -47,6 +47,7 @@ class Player:
         self.hasRetired = False
         self.speed_trap = 0
         self.delta_to_leader = 0
+        self.currentLapInvalid = 1
 
     def __str__(self):
         return self.name + str(self.position)

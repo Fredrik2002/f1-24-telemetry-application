@@ -38,7 +38,7 @@ class Players_Frame(Custom_Frame):
             joueur = LISTE_JOUEURS[i]
             frame, label = self.liste_frame[joueur.position-1]
             if joueur.position != 100:
-                label.config(text=joueur.printing(self.id, LISTE_JOUEURS, session.Seance))
+                label.config(text=joueur.printing(self.id, LISTE_JOUEURS, session.Seance), foreground=teams_color_dictionary[joueur.teamId])
                 self.label_tyres[joueur.position-1].config(text=tyres_dictionnary[joueur.tyres], foreground=tyres_color_dictionnary[joueur.tyres])
             else:
                 label.config(text="")
