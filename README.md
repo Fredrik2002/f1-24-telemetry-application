@@ -1,4 +1,4 @@
-## F1 23 Telemetry Application
+## F1 24 Telemetry Application
 
 The goal of this project is to summarize the most crucial informations in the most handy way possible. \
 The window was created with tkinter & ttkbootstrap
@@ -44,7 +44,7 @@ If you don't have datas to receive, don't worry : run the *utils/sender.py* file
 * *settings.txt* : This files saves the previous connection settings (so you don't have to enter the same port selection and UDP redirection every time). Do not touch unless you know what you are doing
 
 ## To do list
-* Check glitch in CLM where a car gets in the middle (Removed AFK cars ?)
-* Add estimated pit exit position on the map
+
+* Time Trial
 * Problem with weather Forecast Sample in 100% (Too many samples ?)
 
