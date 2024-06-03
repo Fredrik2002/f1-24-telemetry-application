@@ -105,7 +105,7 @@ function_hashmap = { #PacketId : (fonction, arguments)
     6: (update_car_telemetry, ()),
     7: (update_car_status, ()),
     8: (nothing, ()),
-    9: (nothing, ()),
+    9: (delete_map, ()),
     10: (update_car_damage, ()),
     11: (nothing, ()),
     12: (nothing, ()),

@@ -44,7 +44,7 @@ If you don't have datas to receive, don't worry : run the *utils/sender.py* file
 * *settings.txt* : This files saves the previous connection settings (so you don't have to enter the same port selection and UDP redirection every time). Do not touch unless you know what you are doing
 
 ## To do list
-
+* INvalid index when map changes 
 * Time Trial
 * Problem with weather Forecast Sample in 100% (Too many samples ?)
 

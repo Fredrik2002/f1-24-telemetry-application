@@ -34,15 +34,37 @@ class Players_Frame(Custom_Frame):
         # Insère le label pour les pneus
 
     def update(self, LISTE_JOUEURS:list[Player], session):
-        for i in range(session.nb_players):
-            joueur = LISTE_JOUEURS[i]
-            frame, label = self.liste_frame[joueur.position-1]
-            if joueur.position != 100:
+        if session.Seance != 18:
+            for i in range(session.nb_players):
+                joueur = LISTE_JOUEURS[i]
+                frame, label = self.liste_frame[joueur.position-1]
                 label.config(text=joueur.printing(self.id, LISTE_JOUEURS, session.Seance), foreground=teams_color_dictionary[joueur.teamId])
                 self.label_tyres[joueur.position-1].config(text=tyres_dictionnary[joueur.tyres], foreground=tyres_color_dictionnary[joueur.tyres])
-            else:
+            for i in range(session.nb_players, self.n_lines):
                 label.config(text="")
-                self.label_tyres[joueur.position-1].config(text="")
+                self.label_tyres[i].config(text="")
+        else:
+            joueur = LISTE_JOUEURS[0]
+            record = LISTE_JOUEURS[1]
+            rival = LISTE_JOUEURS[3]
+
+            frame, label = self.liste_frame[0]
+            label.config(text=joueur.printing(self.id, LISTE_JOUEURS, session.Seance), foreground=teams_color_dictionary[joueur.teamId])
+            self.label_tyres[0].config(text=tyres_dictionnary[joueur.tyres], foreground=tyres_color_dictionnary[joueur.tyres])
+
+            frame, label = self.liste_frame[1]
+            label.config(text=record.printing(self.id, LISTE_JOUEURS, session.Seance), foreground=teams_color_dictionary[record.teamId])
+            self.label_tyres[1].config(text=tyres_dictionnary[record.tyres], foreground=tyres_color_dictionnary[record.tyres])
+
+            frame, label = self.liste_frame[2]
+            label.config(text=rival.printing(self.id, LISTE_JOUEURS, session.Seance), foreground=teams_color_dictionary[rival.teamId])
+            self.label_tyres[2].config(text=tyres_dictionnary[rival.tyres], foreground=tyres_color_dictionnary[rival.tyres])
+
+            for i in range(3, self.n_lines):
+                frame, label = self.liste_frame[i]
+                label.config(text="")
+                self.label_tyres[i].config(text="")
+
 
 class Packet_Reception_Frame(Custom_Frame):
     def __init__(self, parent, name, id):

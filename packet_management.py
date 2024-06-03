@@ -28,6 +28,7 @@ def update_motion(packet, map_canvas, *args):  # Packet 0
         update_map(map_canvas)
     except Exception as e:
         try:
+            print(e)
             create_map(map_canvas)
         except Exception as e :
             pass
@@ -41,7 +42,6 @@ def update_session(packet, top_frame1, top_frame2, screen, map_canvas):  # Packe
     session.time_left = packet.m_session_time_left
     if session.track != packet.m_track_id: # Track has changed
         session.track = packet.m_track_id
-        created_map=False
         delete_map(map_canvas)
     session.marshalZones = packet.m_marshal_zones  # Array[21]
     session.marshalZones[0].m_zone_start = session.marshalZones[0].m_zone_start - 1
@@ -193,17 +193,24 @@ def create_map(map_canvas):
                         L = []
                     cmi +=1
     session.segments.insert(0, map_canvas.create_line(L1+L0, width=3))
-    for joueur in LISTE_JOUEURS:
-        if joueur.position!=100:
+    for i in range(20):
+        joueur = LISTE_JOUEURS[i]
+        if session.Seance == 18 and i not in [0,1,3]:
+            joueur.oval = map_canvas.create_oval(-1000 / d + x_const - WIDTH_POINTS,
+                                                -1000 / d + z_const - WIDTH_POINTS,
+                                                -1000 / d + x_const + WIDTH_POINTS,
+                                                -1000 / d + z_const + WIDTH_POINTS, outline="")
+        else:
             joueur.oval = map_canvas.create_oval(joueur.worldPositionX / d + x_const - WIDTH_POINTS,
                                                 joueur.worldPositionZ / d + z_const - WIDTH_POINTS,
                                                 joueur.worldPositionX / d + x_const + WIDTH_POINTS,
                                                 joueur.worldPositionZ / d + z_const + WIDTH_POINTS, outline="")
+            
             joueur.etiquette = map_canvas.create_text(joueur.worldPositionX / d + x_const + 25,
                                                     joueur.worldPositionZ / d + z_const - 25,
                                                     text=joueur.name, font=("Cousine", 13))
             map_canvas.moveto(joueur.oval, joueur.worldPositionX / d + x_const - WIDTH_POINTS,
-                              joueur.worldPositionZ / d + z_const - WIDTH_POINTS)
+                                joueur.worldPositionZ / d + z_const - WIDTH_POINTS)
 
 def delete_map(map_canvas):
     for element in session.segments:
@@ -211,6 +218,7 @@ def delete_map(map_canvas):
     for joueur in LISTE_JOUEURS:
         map_canvas.delete(joueur.oval)
         map_canvas.delete(joueur.etiquette)
+        joueur.oval = None
 
 def update_map(map_canvas):
     _, d, x, z = track_dictionary[session.track]
