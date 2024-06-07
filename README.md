@@ -11,40 +11,32 @@ The window was created with tkinter & ttkbootstrap
 
 ![Telemetry 4](https://github.com/Fredrik2002/f1-23-telemetry-application/assets/86866135/080b3804-67bd-4c6b-bc9c-970d796546a3)
 
-## Features
-* Mini-Map & Mini sectors coloured by the flag status in that section
-* All datas regarding ERS, Fuel, Lap Times, Damages, Temperatures, Tyres and more
-* Counts warnings taken by each player
-* Record time needed for each player to reach 200km/h at the start
-* Possibility to redirect datas to another IP address (which can be yourself, if you want 2 different applications to use the same datas)
-* Possibility to check how many packets you receive per second
-
 ## Usage
-1. Make sure all the packages required are installed. They are :
+1. Make sure all the python packages required are installed :
 - tkinter
 - ttkbootstrap
-- PIL \
-Run *Telemetry.py*, go to *Settings* on the top left corner, *PORT Selection*, and you can choose the port you want to receive the datas on. \
-If you don't have datas to receive, don't worry : run the *utils/sender.py* file, it will send a few datas on port 20777 of your localhost, so you can see what the app looks like
+- PIL
+Open a terminal and type `pip install tkinter ttkbootstrap PIL`
+
+2. Run *Telemetry.py*
+3. If you do not receive datas on default port (20777), go to *Settings* on the top left corner of the app, *PORT Selection*, and you can choose the port you want to receive the datas on (default on 20777). 
+
 
 ## Project structure
-* data_samples : Provides a dataset for test the app with 'fake' data (used by *utils/sender.py*)
 * utils :
     * *sender.py* : Send sample datas to a given port and a given IP address
     * draw.py : If you run this file before the beginning of a lap, it will 'draw' the track by saving all of player's car's positions within the given file
     * *receiver.py* : Stores packets received in a list, and stores the list in a file (such as *data_samples/data_2023.txt*). 10min of recording ~= 100 Mo of data, be careful !
     * *serveur.py* Receives datas from different ports and redirect them to direct IP addresses
     * *calculateur.py* : Doesn't work for now
-* *Telemetry.py* : Main application you have to run
+* __*Telemetry.py* : Main application you have to run__
 * *Player.py* & *Session.py* : Classes to represent a player and a session
 * *packet_management.py* : Stores the different packets informations into different players and session instances
 * *dictionnaries.py* : This is where all the different dictionnaries are stored
 * *Custom_Frame.py* : This is where is created the main frame
-* *parser2022.py* & *parser2023.py* : Parse the data received to json objects
+* *parser202x.py* : Parse the data received for the F1 2x game (default on F1 24)
 * *settings.txt* : This files saves the previous connection settings (so you don't have to enter the same port selection and UDP redirection every time). Do not touch unless you know what you are doing
 
 ## To do list
-* INvalid index when map changes 
-* Time Trial
 * Problem with weather Forecast Sample in 100% (Too many samples ?)
 

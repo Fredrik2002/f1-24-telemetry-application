@@ -67,7 +67,7 @@ track_dictionary = { #(track name, highNumber=Small on canvas, x_offset, y_offse
     23: ("texas_short", 2, 300, 300),
     24: ("suzuka_short", 2, 300, 300),
     25: ("hanoi", 2, 300, 300),
-    26: ("zandvoort", 2, 300, 300),
+    26: ("zandvoort", 2, 500, 300),
     27: ("imola", 2, 500, 300),
     28: ("portimao", 2, 300, 300),
     29: ("jeddah", 4,500, 350),

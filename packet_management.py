@@ -8,6 +8,7 @@ import time
 from ttkbootstrap import Toplevel, LEFT, Entry, IntVar, Label
 from tkinter import Message, Checkbutton, Button
 from Custom_Frame import Custom_Frame
+import traceback
 
 LISTE_JOUEURS: list[Player] = []
 session: Session = Session()
@@ -28,7 +29,7 @@ def update_motion(packet, map_canvas, *args):  # Packet 0
         update_map(map_canvas)
     except Exception as e:
         try:
-            print(e)
+            traceback.print_exc()
             create_map(map_canvas)
         except Exception as e :
             pass
@@ -38,11 +39,11 @@ def update_session(packet, top_frame1, top_frame2, screen, map_canvas):  # Packe
     session.trackTemperature = packet.m_weather_forecast_samples[0].m_track_temperature
     session.airTemperature = packet.m_weather_forecast_samples[0].m_air_temperature
     session.nbLaps = packet.m_total_laps
-    session.Seance = packet.m_session_type
     session.time_left = packet.m_session_time_left
-    if session.track != packet.m_track_id: # Track has changed
+    if session.track != packet.m_track_id or session.Seance != packet.m_session_type: # Track or session has changed
         session.track = packet.m_track_id
         delete_map(map_canvas)
+    session.Seance = packet.m_session_type
     session.marshalZones = packet.m_marshal_zones  # Array[21]
     session.marshalZones[0].m_zone_start = session.marshalZones[0].m_zone_start - 1
     session.num_marshal_zones = packet.m_num_marshal_zones
@@ -195,7 +196,7 @@ def create_map(map_canvas):
     session.segments.insert(0, map_canvas.create_line(L1+L0, width=3))
     for i in range(20):
         joueur = LISTE_JOUEURS[i]
-        if session.Seance == 18 and i not in [0,1,3]:
+        if session.Seance == 18 and i!=0:
             joueur.oval = map_canvas.create_oval(-1000 / d + x_const - WIDTH_POINTS,
                                                 -1000 / d + z_const - WIDTH_POINTS,
                                                 -1000 / d + x_const + WIDTH_POINTS,
@@ -215,6 +216,7 @@ def create_map(map_canvas):
 def delete_map(map_canvas):
     for element in session.segments:
         map_canvas.delete(element)
+    session.segments = []
     for joueur in LISTE_JOUEURS:
         map_canvas.delete(joueur.oval)
         map_canvas.delete(joueur.etiquette)
