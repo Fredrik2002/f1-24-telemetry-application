@@ -15,8 +15,8 @@ The window was created with tkinter & ttkbootstrap
 1. Make sure all the python packages required are installed :
 - tkinter
 - ttkbootstrap
-- PIL
-Open a terminal and type `pip install tkinter ttkbootstrap PIL`
+- PIL \
+For that, open a terminal and type `pip install tkinter ttkbootstrap PIL`
 
 2. Run *Telemetry.py*
 3. If you do not receive datas on default port (20777), go to *Settings* on the top left corner of the app, *PORT Selection*, and you can choose the port you want to receive the datas on (default on 20777). 
@@ -39,4 +39,5 @@ Open a terminal and type `pip install tkinter ttkbootstrap PIL`
 
 ## To do list
 * Problem with weather Forecast Sample in 100% (Too many samples ?)
+* Improve the general looking of the app (flag apparition, title)
 
