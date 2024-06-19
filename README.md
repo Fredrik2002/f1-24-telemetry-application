@@ -27,8 +27,9 @@ The goal of this project is to make the most important data from the in-game EA 
 ### <u>Step 1 : Run the application</u>
 1. Make sure all the required python packages are installed :
 
-```pip install tkinter ttkbootstrap PIL```
-
+```bash
+pip install tkinter ttkbootstrap PIL
+``` 
 2. Run *Telemetry.py*
 
 ### <u>Step 2 : Send datas to the application </u>
