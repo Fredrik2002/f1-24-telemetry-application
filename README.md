@@ -1,6 +1,16 @@
 # F1 24 Telemetry Application
 
-## 🔍 Overview
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Usage](#usage)
+  - [Step 1: Run the application](#step1)
+  - [Step 2: Send data to the application](#step2)
+- [Project Structure](#project-structure)
+- [To-do List](#to-do-list)
+
+## 🔍 Overview <a id="overview"></a>
 The goal of this project is to make the most important data from the in-game EA F1 24 telemetry system easily accessible.
 
 ![Telemetry map](https://github.com/Fredrik2002/f1-23-telemetry-application/assets/86866135/7b1ce85e-f57d-4861-b7f5-10bee4ad9b11)
@@ -9,7 +19,7 @@ The goal of this project is to make the most important data from the in-game EA 
 
 ![Telemetry 3](https://github.com/Fredrik2002/f1-23-telemetry-application/assets/86866135/ff73f7f2-b7c2-48e1-b547-4eebc37fae1c)
 
-## 🚀 Features
+## 🚀 Features <a id="features"></a>
 - ✅ Title bar displaying session type, laps (or time left if in qualifying), and race status (green, yellow, or red flag, SC, or VSC)
 - ✅ Main Menu tab showing different information depending on the session type (Qualifying, Race, Time Trial)
 - ✅ Fully functional mini-map displaying the track, car positions, and mini-sectors lighting up under a yellow flag
@@ -23,8 +33,8 @@ The goal of this project is to make the most important data from the in-game EA 
 - ✅ Compatibility with older parsers for previous EA F1 games (F1 22 & F1 23)
 
 
-## 🔧 Usage
-### <u>Step 1 : Run the application</u>
+## 🔧 Usage <a id="usage"></a>
+### <u>Step 1 : Run the application</u><a id="step1"></a>
 1. Make sure all the required python packages are installed :
 
 ```bash
@@ -32,7 +42,7 @@ pip install tkinter ttkbootstrap PIL
 ``` 
 2. Run *Telemetry.py*
 
-### <u>Step 2 : Send datas to the application </u>
+### <u>Step 2 : Send datas to the application </u> <a id="step2"></a>
 Open the F1 Game :
 - ➡️ Go to Settings 
 - ➡️ Telemetry Settings
@@ -42,7 +52,7 @@ Open the F1 Game :
 - ✅ You are then good to go !
 
 
-## 📘 Project structure
+## 📘 Project structure <a id="project-structure"></a>
 * utils :
     * *sender.py* : Sends sample data to a given port and IP address.
     * draw.py : If you run this file before the beginning of a lap, it will 'draw' the track by saving all of player's car's positions within the given file (that's how the mini-maps are created)
@@ -56,7 +66,7 @@ Open the F1 Game :
 * *parser202x.py* : Parses the data received for the F1 2x game (default for F1 24)
 * *settings.txt* : This files saves the previous connection settings (so you don't have to enter the same port selection and UDP redirection every time). Do not touch unless you know what you are doing
 
-## ✏️ To-do list
+## ✏️ To-do list <a id="to-do-list"></a>
 * Fix the issue with weather Forecast Sample in 100% (Too many samples ?)
 * Improve the overall appearance of the app (flag apparition, title)
 
