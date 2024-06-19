@@ -2,7 +2,7 @@ from parser2023 import Listener
 track = "portimao"
 
 PORT=20777
-file=open(f"tracks/{track}_2020_racingline.txt", "a")
+file=open(f"../tracks/{track}_2020_racingline.txt", "a")
 file.write(f'"Track file for {track}","2020-07-01 19:31:18",0.000,4,1,v3" \n')
 file.write(f'"dist","pos_z","pos_x","pos_y","drs","sector" \n')
 
