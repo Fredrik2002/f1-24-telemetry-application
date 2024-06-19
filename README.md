@@ -34,7 +34,7 @@ The goal of this project is to make the most important data from the in-game EA 
 
 
 ## 🔧 Usage <a id="usage"></a>
-### <u>Step 1 : Run the application</u><a id="step1"></a>
+### <ins>Step 1 : Run the application</ins><a id="step1"></a>
 1. Make sure all the required python packages are installed :
 
 ```bash
@@ -42,7 +42,7 @@ pip install tkinter ttkbootstrap PIL
 ``` 
 2. Run *Telemetry.py*
 
-### <u>Step 2 : Send datas to the application </u> <a id="step2"></a>
+### <ins>Step 2 : Send datas to the application </ins> <a id="step2"></a>
 Open the F1 Game :
 - ➡️ Go to Settings 
 - ➡️ Telemetry Settings
